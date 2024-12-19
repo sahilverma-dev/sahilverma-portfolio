@@ -4,6 +4,7 @@ import "./globals.css";
 import Navigation from "@/components/navigation";
 import AnimatedBackground from "@/components/animated/animated-background";
 import Footer from "@/components/footer";
+import ScrollToTop from "@/components/scroll-to-top";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -29,11 +30,12 @@ export default function RootLayout({
         <Navigation />
         <main
           className="w-full min-h-dvh max-w-6xl mx-auto mt-32 px-4 md:px-8"
-          // style={{
-          //   height: "500vh",
-          // }}
+          style={{
+            height: "500vh",
+          }}
         >
           {children}
+          <ScrollToTop />
         </main>
         <Footer />
       </body>
