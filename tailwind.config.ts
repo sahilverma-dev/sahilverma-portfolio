@@ -9,8 +9,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: "hsl(var(--primary))",
+        // "line-gradient":
+        //   "linear-gradient(90deg,hsla(0,0%,95%,0) 0,#f3f3f3 50%,hsla(0,0%,95%,0))",
+      },
+      backgroundImage: {
+        line: "linear-gradient(90deg,hsla(0,0%,95%,0) 0,#f3f3f3 50%,hsla(0,0%,95%,0))",
       },
     },
   },
