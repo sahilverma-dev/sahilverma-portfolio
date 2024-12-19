@@ -12,7 +12,12 @@ const AnimatedFlair = () => {
         y: event.clientY,
       });
     };
-    window.addEventListener("mousemove", handleMouseMove);
+
+    // only add lister if not mobile
+    if (window.innerWidth >= 768) {
+      window.addEventListener("mousemove", handleMouseMove);
+    }
+
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
     };
