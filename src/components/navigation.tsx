@@ -16,8 +16,6 @@ const Navigation = () => {
 
   const pathname = usePathname();
 
-  const [activeLink, setActiveLink] = useState("Home");
-
   const isBlogActive = pathname?.startsWith("/blog");
 
   useEffect(() => {
@@ -44,7 +42,7 @@ const Navigation = () => {
     >
       <div
         className={cn(
-          "flex items-center justify-between mx-auto w-full max-w-6xl px-2",
+          "flex items-center justify-between mx-auto w-full max-w-6xl px-4 md:px-8",
           bigNav ? "py-2" : "py-6"
         )}
       >
@@ -84,17 +82,17 @@ const Navigation = () => {
                 >
                   <Link
                     href={link.href}
-                    onClick={() => setActiveLink(link.name)}
+                    // onClick={() => setActiveLink(link.name)}
                     className={cn(
                       "flex items-center justify-center px-4 py-2 transition hover:text-white",
-                      (activeLink === link.name ||
+                      (pathname === link.href ||
                         (isBlogActive && link.name === "Blog")) &&
                         "text-white"
                     )}
                   >
                     {link.name}
 
-                    {(activeLink === link.name ||
+                    {(pathname === link.href ||
                       (isBlogActive && link.name === "Blog")) && (
                       <motion.span
                         layout
