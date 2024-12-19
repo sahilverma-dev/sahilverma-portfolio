@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/navigation";
 import AnimatedBackground from "@/components/animated/animated-background";
+import Footer from "@/components/footer";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -27,13 +28,14 @@ export default function RootLayout({
 
         <Navigation />
         <main
-          className="w-full max-w-6xl mx-auto mt-32 px-4 md:px-8"
-          style={{
-            height: "500vh",
-          }}
+          className="w-full min-h-dvh max-w-6xl mx-auto mt-32 px-4 md:px-8"
+          // style={{
+          //   height: "500vh",
+          // }}
         >
           {children}
         </main>
+        <Footer />
       </body>
     </html>
   );
