@@ -10,7 +10,7 @@ const Footer = () => {
   const date = new Date();
   return (
     <footer className="w-full bg-background border-t border-white/10">
-      <div className="max-w-5xl xl:max-w-6xl mx-auto space-y-2 py-10 flex flex-col gap-4 md:flex-row justify-between items-center">
+      <div className="max-w-5xl xl:max-w-5xl mx-auto space-y-2 py-10 flex flex-col gap-4 md:flex-row justify-between items-center">
         <div className="md:w-[337px]">
           <Link href="/" className="flex items-center gap-2">
             <Logo className="h-8 w-8 object-contain md:object-left" />

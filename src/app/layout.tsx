@@ -29,7 +29,7 @@ export default function RootLayout({
 
         <Navigation />
         <main
-          className="w-full min-h-dvh max-w-6xl mx-auto mt-32 px-4 md:px-8"
+          className="w-full min-h-dvh max-w-5xl mx-auto mt-32 px-4 md:px-8"
           style={{
             height: "500vh",
           }}

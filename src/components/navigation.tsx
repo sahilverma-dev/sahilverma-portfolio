@@ -42,7 +42,7 @@ const Navigation = () => {
     >
       <div
         className={cn(
-          "flex items-center justify-between mx-auto w-full max-w-6xl px-4 md:px-8",
+          "flex items-center justify-between mx-auto w-full max-w-5xl px-4 md:px-8",
           bigNav ? "py-2" : "py-6"
         )}
       >

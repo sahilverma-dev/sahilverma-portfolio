@@ -57,3 +57,100 @@ export const SOCIAL_LINKS = [
     href: "https://www.instagram.com/sahilverma.dev/",
   },
 ];
+
+// skills
+export const SKILLS = [
+  {
+    title: "Languages",
+    stacks: ["HTML", "CSS", "JavaScript", "TypeScript", "Python", "Dart"],
+  },
+  {
+    title: "Frontend Frameworks",
+    stacks: ["React JS", "Next.js"],
+  },
+  {
+    title: "React Ecosystems",
+    stacks: [
+      "React Testing Library",
+      "Framer Motion",
+      "Motion",
+      "Jest",
+      "React Router Dom",
+      "Tanstack Query",
+      "Zustand",
+      "Redux",
+      "Axios",
+      "React Hook Form",
+      "Radix UI",
+      "Headless UI",
+      "Zod",
+    ],
+  },
+  {
+    title: "Components Libraries",
+    stacks: [
+      "Shadcn UI",
+      "Material UI",
+      "Mantine UI",
+      "Chakra UI",
+      "React Native Paper",
+      "Tama GUI",
+    ],
+  },
+  {
+    title: "CSS Styling",
+    stacks: [
+      "Tailwind CSS",
+      "Emotion",
+      "Styled Components",
+      "CSS Modules",
+      "SASS",
+      "Bootstrap",
+    ],
+  },
+  {
+    title: "Cross-Platform",
+    stacks: ["React Native", "Expo", "Flutter"],
+  },
+  {
+    title: "Backend",
+    stacks: [
+      "Node.js",
+      "Bun",
+      "Socket.io",
+      "Express.js",
+      "Mongoose",
+      "Prisma",
+      "Drizzle",
+    ],
+  },
+  {
+    title: "Databases/BASS/CMS",
+    stacks: [
+      "MongoDB",
+      "PostgreSQL",
+      "SQLite",
+      "Redis",
+      "Firebase/Firestore",
+      "Supabase",
+      "Appwrite",
+      "Sanity.IO",
+      "Payload CMS",
+    ],
+  },
+  {
+    title: "Other Technologies",
+    stacks: [
+      "WebRTC",
+      "WebSockets",
+      "Socket.io",
+      "Cloudinary",
+      "Vercel",
+      "Netlify",
+    ],
+  },
+  {
+    title: "Other Tools",
+    stacks: ["VS Code", "Git", "GitHub", "Eslint", "Figma"],
+  },
+];
