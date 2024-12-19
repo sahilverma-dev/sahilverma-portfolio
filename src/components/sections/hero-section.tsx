@@ -49,7 +49,11 @@ const Hero = () => {
       </AnimationContainer>
 
       <AnimationContainer customClassName="mb-8 relative lg:mb-0">
-        <motion.div layout layoutId="sahil-verma">
+        <motion.div
+          layout
+          layoutId="sahil-verma"
+          className="border border-white/10 w-32 transition duration-300 ease-out overflow-hidden rounded-3xl lg:w-96 aspect-square"
+        >
           <Image
             src="/images/sahil-verma.png"
             alt="Sahil Verma"
@@ -57,7 +61,7 @@ const Hero = () => {
             width={2190}
             sizes="30vw"
             priority
-            className="object-cover object-top w-32  transition duration-300 ease-out rounded-3xl lg:w-96 aspect-square"
+            className="object-cover object-top h-full w-full"
           />
         </motion.div>
         <div className="absolute block w-44 h-44 rounded-full md:hidden top-0 left-0 right-1/2 -z-10 bg-violet-500/40 blur-[5rem]"></div>
