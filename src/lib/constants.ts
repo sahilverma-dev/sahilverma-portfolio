@@ -2,7 +2,11 @@
 import { BsLinkedin as LinkedinIcon } from "react-icons/bs";
 import { FiCodepen as CodepenIcon } from "react-icons/fi";
 import { BsGithub as GithubIcon } from "react-icons/bs";
-import { BsTwitter as TwitterIcon } from "react-icons/bs";
+
+import {
+  BsTwitterX as TwitterXIcon,
+  BsDiscord as DiscordIcon,
+} from "react-icons/bs";
 import { BsInstagram as InstagramIcon } from "react-icons/bs";
 
 // navigation
@@ -32,6 +36,11 @@ export const LINKS = [
 // social media
 export const SOCIAL_LINKS = [
   {
+    title: "Discord",
+    icon: DiscordIcon,
+    href: "https://discord.com/users/669542427454996490",
+  },
+  {
     title: "LinkedIn",
     icon: LinkedinIcon,
     href: "https://www.linkedin.com/in/sahil-verma-970b9920a/",
@@ -47,8 +56,8 @@ export const SOCIAL_LINKS = [
     href: "https://github.com/sahilverma-dev",
   },
   {
-    title: "Twitter",
-    icon: TwitterIcon,
+    title: "X",
+    icon: TwitterXIcon,
     href: "https://www.twitter.com/sahilverma_dev/",
   },
   {
