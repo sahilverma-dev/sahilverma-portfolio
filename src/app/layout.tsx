@@ -28,12 +28,7 @@ export default function RootLayout({
         <AnimatedBackground />
 
         <Navigation />
-        <main
-          className="w-full min-h-dvh max-w-5xl mx-auto mt-32 px-4 md:px-8"
-          style={{
-            height: "500vh",
-          }}
-        >
+        <main className="w-full min-h-dvh max-w-5xl mx-auto mt-32 px-4 md:px-8">
           {children}
           <ScrollToTop />
         </main>
