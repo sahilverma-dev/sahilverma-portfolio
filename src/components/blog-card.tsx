@@ -3,6 +3,7 @@ import { Badge } from "./ui/badge";
 import AnimationContainer from "./animated/animated-container";
 import { BlogMetadata } from "@/lib/blog";
 import { formatDate } from "@/lib/utils";
+import Image from "next/image";
 
 interface Props {
   blog: BlogMetadata;
@@ -13,9 +14,9 @@ const BlogCard: React.FC<Props> = ({ blog }) => {
     <AnimationContainer>
       <article className="relative isolate flex flex-col gap-8 md:flex-row group">
         <div className="relative aspect-video md:w-64 md:shrink-0">
-          <img
-            src={blog.image}
-            alt={blog.title}
+          <Image
+            src={blog.image as string}
+            alt={blog.title as string}
             className="absolute inset-0 h-full w-full rounded-2xl ] object-cover"
             width={960}
             height={480}

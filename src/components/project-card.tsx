@@ -13,6 +13,7 @@ import AnimationContainer from "./animated/animated-container";
 import Link from "next/link";
 import { ProjectMetadata } from "@/lib/project";
 import { formatDate } from "@/lib/utils";
+import Image from "next/image";
 
 interface Props {
   project: ProjectMetadata;
@@ -61,9 +62,11 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
             </a>
           </div>
           <Link href={`/projects/${project.slug}`}>
-            <img
+            <Image
               src={project.image}
               alt={project.title}
+              width={960}
+              height={480}
               className=" w-full aspect-video h-full object-cover object-top "
             />
           </Link>

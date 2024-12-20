@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowLeftIcon } from "lucide-react";
 
 import { formatDate } from "@/lib/utils";
+import Image from "next/image";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -68,9 +69,9 @@ const Blog = async ({ params }: Props) => {
 
       {image && (
         <div className="relative mb-6 h-96 w-full overflow-hidden rounded-lg">
-          <img
+          <Image
             src={image}
-            alt={title}
+            alt={title as string}
             className="h-full w-full rounded-2xl object-cover"
             width={960}
             height={480}

@@ -1,0 +1,335 @@
+---
+  title: React Query Cheat Sheet
+  summary: React Query is a powerful data-fetching and state management library for React applications. It simplifies the process of working with remote data and caching.
+  image: https://media2.dev.to/dynamic/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F22owrhol2szvarhs2aae.png
+  author: 'Sahil Verma'
+  publishedAt: '2023-04-08'
+---
+
+## **Basic Concepts**
+
+A **`query`** represents a request for data. It includes a key, which is a unique identifier for the data being fetched, and a query function, which is responsible for fetching the data. The query function can be an asynchronous function that returns the data or a promise that resolves to the data.
+
+```
+import { useQuery } from 'react-query';
+
+const { data, isLoading, isError } = useQuery('todos', async () => {
+  const response = await fetch('/api/todos');
+  const data = await response.json();
+  return data;
+});
+
+```
+
+In the example above, we're using the **`useQuery`** hook user query data from an API. The key for this query is **`'todos'`**, and the query function is an asynchronous function that uses **`fetch`** to make a request to the API and returns the JSON response.
+
+A **`query result`** is an object that contains the data, loading state, and error state for a query. It is returned by the **`useQuery`** hook.
+
+```
+const { data, isLoading, isError } = useQuery('todos', async () => {
+  // ...
+});
+
+```
+
+In the example above, we're destructuring the query result into three variables: **`data`**, **`isLoading`**, and **`isError`**. **`data`** contains the data returned by the query function, **`isLoading`** is a boolean that indicates whether the query is currently loading, and **`isError`** is a boolean that indicates whether an error occurred while fetching the data.
+
+A **`mutation`** is a request to modify data. It includes a key, a unique identifier for the mutation, and a mutation function responsible for making the modification. The mutation function can be an asynchronous function that returns the updated data or a promise that resolves the updated data.
+
+```
+import { useMutation } from 'react-query';
+
+const { mutate, isLoading, isError } = useMutation(async (text) => {
+  const response = await fetch('/api/todos', {
+    method: 'POST',
+    body: JSON.stringify({ text }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  const data = await response.json();
+  return data;
+});
+
+```
+
+In the example above, we're using the **`useMutation`** hook to create a mutation that adds a new todo item to the API. The mutation function is an asynchronous function that uses **`fetch`** to make a POST request to the API with the new todo item's **`text`** property.
+
+A **`query client`** is a central object that manages the caching and execution of queries and mutations. It is created using the **`QueryClient`** constructor and can be accessed and used throughout your application using the **`QueryClientProvider`** component.
+
+```
+jsxCopy code
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient();
+
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      {/* Your app code here */}
+    </QueryClientProvider>
+  );
+}
+
+```
+
+In the example above, we're creating a **`QueryClient`** object and passing it to the **`QueryClientProvider`** component as a prop. This makes the **`QueryClient`** available throughout the app.
+
+React Query provides several hooks that you can use to manage and retrieve data in your application:
+
+The **`useQuery`** hook is used to fetch and cache data. It takes a key and a query function as arguments and returns a query result object.
+
+```
+const { data, isLoading, isError } = useQuery('todos', async () => {
+  const response = await fetch('/api/todos');
+  const data = await response.json();
+  return data;
+});
+
+```
+
+In the example above, we're using **`useQuery`** to fetch and cache data from the **`/api/todos`** endpoint. The key for this query is **`'todos'`**, and the query function is an asynchronous function that uses **`fetch`** to make a request to the API and returns the JSON response.
+
+The **`useMutation`** hook is used to modify data. It takes a mutation function as an argument and returns a mutation result object.
+
+```
+const { mutate, isLoading, isError } = useMutation(async (text) => {
+  const response = await fetch('/api/todos', {
+    method: 'POST',
+    body: JSON.stringify({ text }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  const data = await response.json();
+  return data;
+});
+
+```
+
+In the example above, we're using **`useMutation`** to create a mutation that adds a new todo item to the API. The mutation function is an asynchronous function that uses **`fetch`** to make a POST request to the API with the new todo item's **`text`** property.
+
+The **`useQueryClient`** hook is used to access the **`QueryClient`** object in your components. It returns the **`QueryClient`** object.
+
+```
+const queryClient = useQueryClient();
+
+```
+
+In the example above, we're using **`useQueryClient`** to get access to the **`QueryClient`** object. We can then use this object to manually fetch or invalidate queries, or to manually mutate data.
+
+React Query automatically caches query results for you. When you fetch data using **`useQuery`**, React Query checks if the data is already in the cache. If it is, it returns the cached data instead of making a new request to the server.
+
+```
+const { data, isLoading, isError } = useQuery('todos', async () => {
+  const response = await fetch('/api/todos');
+  const data = await response.json();
+  return data;
+});
+
+```
+
+In the example above, if the **`'todos'`** query has already been fetched and cached, React Query will return the cached data instead of making a new request to the server.
+
+You can manually refetch query data using the **`refetch`** function that is returned by the **`useQuery`** hook.
+
+```
+const { data, isLoading, isError, refetch } = useQuery('todos', async () => {
+  const response = await fetch('/api/todos');
+  const data = await response.json();
+  return data;
+});
+
+function handleRefresh() {
+  refetch();
+}
+
+```
+
+In the example above, we're using the **`refetch`** function to manually refresh the **`'todos'`** query data. This can be useful if you need to update the data after a mutation or if the data has become stale.
+
+You can manually invalidate query data using the **`invalidateQueries`** function on the **`QueryClient`** object.
+
+```
+const queryClient = useQueryClient();
+
+function handleClearCache() {
+  queryClient.invalidateQueries('todos');
+}
+
+```
+
+In the example above, we're using the **`invalidateQueries`** function to manually invalidate the **`'todos'`** query data. This can be useful if you need to force the query to refetch data from the server, rather than returning cached data.
+
+React Query provides built-in support for pagination. You can use the **`useInfiniteQuery`** hook to fetch paginated data.
+
+```
+const { data, isLoading, isError, fetchNextPage, hasNextPage } = useInfiniteQuery('todos', async ({ pageParam = 0 }) => {
+  const response = await fetch(`/api/todos?page=${pageParam}`);
+  const data = await response.json();
+  return data;
+}, {
+  getNextPageParam: (lastPage) => lastPage.nextPage,
+});
+
+function handleLoadMore() {
+  fetchNextPage();
+}
+
+return (
+  <div>
+    {data.pages.map((page) => (
+      <ul key={page.pageNumber}>
+        {page.todos.map((todo) => (
+          <li key={todo.id}>{todo.text}</li>
+        ))}
+      </ul>
+    ))}
+    <button onClick={handleLoadMore} disabled={!hasNextPage}>
+      {isLoading ? 'Loading...' : 'Load More'}
+    </button>
+  </div>
+);
+
+```
+
+In the example above, we're using the **`useInfiniteQuery`** hook to fetch paginated todo items from the API. The query key is **`'todos'`**, and the query function takes a **`pageParam`** argument that specifies which page of data to fetch. The **`getNextPageParam`** option is used to determine the next page of data to fetch based on the last page's data.
+
+The **`fetchNextPage`** function is used to fetch the next page of data, and the **`hasNextPage`** property is used to determine if there is more data to fetch. The **`isLoading`** property is used to display a loading indicator while data is being fetched.
+
+React Query provides built-in support for prefetching. You can use the **`useQuery`** hook with the **`initialData`** option to prefetch query data.
+
+```
+const { data, isLoading, isError } = useQuery('todos', async () => {
+  const response = await fetch('/api/todos');
+  const data = await response.json();
+  return data;
+}, {
+  initialData: preloadedData,
+  staleTime: 1000 * 60 * 5, // 5 minutes
+});
+
+return (
+  <div>
+    <ul>
+      {data.map((todo) => (
+        <li key={todo.id}>{todo.text}</li>
+      ))}
+    </ul>
+  </div>
+);
+
+```
+
+In the example above, we're using the **`useQuery`** hook to prefetch todo items from the server using the **`initialData`** option. The **`preloadedData`** variable contains the prefetched data. The **`staleTime`** option is used to specify how long the data is considered fresh and can be returned from the cache without making a new request to the server.
+
+React Query automatically retries failed queries by default. You can customize the retry behavior using the **`retry`** option.
+
+```
+const { data, isLoading, isError } = useQuery('todos', async () => {
+  const response = await fetch('/api/todos');
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error('Failed to fetch todo items');
+  }
+  return data;
+}, {
+  retry: 3,
+  retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 30000),
+});
+
+```
+
+In the example above, we're using the **`retry`** and **`retryDelay`** options to specify that the query should be retried up to 3 times, with a delay that increases exponentially with each retry attempt. If the query fails after the maximum number of retries, an error will be thrown.
+
+React Query provides built-in support for query cancellation. You can use the **`cancelQuery`** function to cancel a running query.
+
+```
+const { data, isLoading, isError, isFetching, error, cancel } = useQuery('todos', async () => {
+  const response = await fetch('/api/todos');
+  const data = await response.json();
+  return data;
+});
+
+function handleClick() {
+  cancel();
+}
+
+return (
+  <div>
+    {isLoading ? (
+      <p>Loading...</p>
+    ) : isError ? (
+      <p>{error.message}</p>
+    ) : (
+      <>
+        <ul>
+          {data.map((todo) => (
+            <li key={todo.id}>{todo.text}</li>
+          ))}
+        </ul>
+        {isFetching && <p>Fetching...</p>}
+        <button onClick={handleClick}>Cancel</button>
+      </>
+    )}
+  </div>
+);
+
+```
+
+In the example above, we're using the **`cancelQuery`** function to cancel the **`'todos'`** query. The **`isFetching`** property is used to display a message while the query is being canceled.
+
+React Query provides built-in support for query composition. You can use the **`useQueries`** hook to fetch multiple queries in parallel.
+
+```
+
+const [queryOneResult, queryTwoResult] = useQueries([
+  {
+    queryKey: 'todos',
+    queryFn: async () => {
+      const response = await fetch('/api/todos');
+      const data = await response.json();
+      return data;
+    },
+  },
+  {
+    queryKey: 'users',
+    queryFn: async () => {
+      const response = await fetch('/api/users');
+      const data = await response.json();
+      return data;
+    },
+  },
+]);
+
+const todos = queryOneResult.data;
+const users = queryTwoResult.data;
+
+return (
+  <div>
+    {queryOneResult.isLoading || queryTwoResult.isLoading ? (
+      <p>Loading...</p>
+    ) : queryOneResult.isError || queryTwoResult.isError ? (
+      <p>Error!</p>
+    ) : (
+      <>
+        <ul>
+          {todos.map((todo) => (
+            <li key={todo.id}>{todo.text}</li>
+          ))}
+        </ul>
+        <ul>
+          {users.map((user) => (
+            <li key={user.id}>{user.name}</li>
+          ))}
+        </ul>
+      </>
+    )}
+  </div>
+);
+
+```
+
+In the example above, we're using the **`useQueries`** hook to fetch multiple queries in parallel. The **`queryKey`** property is used to identify each query, and the **`queryFn`** property is used to define the query function. The **`isLoading`**, **`isError`**, and **`data`** properties are used to display the query results.
+
+React Query is a powerful library that provides a simple and elegant solution for managing data fetching in React applications. By providing a flexible and customizable API, React Query enables developers to easily manage complex data fetching scenarios with ease. By incorporating features such as caching, pagination, and prefetching, React Query enables developers to build fast and responsive user interfaces that can scale to handle large amounts of data.

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client";
 
 import { cn } from "@/lib/utils";
@@ -6,17 +5,16 @@ import { useEffect, useState } from "react";
 import { buttonVariants } from "../ui/button";
 import { AnimatePresence, HTMLMotionProps, motion } from "motion/react";
 import { XIcon } from "lucide-react";
+import Image from "next/image";
 
 type BlogImageProps = React.ImgHTMLAttributes<
   HTMLImageElement | Omit<HTMLMotionProps<"img">, "ref">
 >;
-// type BlogImageProps = React.ImgHTMLAttributes<HTMLImageElement>;
 
 const BlogImage: React.FC<BlogImageProps> = ({
   src,
   alt = "",
   className = "",
-  ...props
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -34,22 +32,25 @@ const BlogImage: React.FC<BlogImageProps> = ({
 
   return (
     <>
-      <motion.div
-        layout
-        layoutId="blog-image"
-        className={`relative rounded-2xl my-4 overflow-hidden cursor-pointer`}
-        onClick={() => setOpen(true)}
-      >
-        <img
-          src={src}
-          alt={alt}
-          className={cn(
-            "w-full h-full object-cover transition-opacity duration-300",
-            className
-          )}
-          {...props}
-        />
-      </motion.div>
+      {src && (
+        <motion.div
+          layout
+          layoutId="blog-image"
+          className={`relative rounded-2xl my-4 overflow-hidden cursor-pointer`}
+          onClick={() => setOpen(true)}
+        >
+          <Image
+            src={src}
+            alt={alt}
+            className={cn(
+              "w-full h-full object-cover transition-opacity duration-300",
+              className
+            )}
+            height={960}
+            width={960}
+          />
+        </motion.div>
+      )}
       <AnimatePresence mode="wait">
         {open && (
           <div className="fixed inset-0 z-[99999999]">
@@ -73,7 +74,6 @@ const BlogImage: React.FC<BlogImageProps> = ({
               onClick={() => setOpen(false)}
             />
             <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full max-w-5xl p-4">
-              {/* @ts-ignore */}
               <motion.img
                 layout
                 layoutId="blog-image"
@@ -83,7 +83,6 @@ const BlogImage: React.FC<BlogImageProps> = ({
                   "w-full h-full object-cover transition-opacity duration-300 rounded-3xl",
                   className
                 )}
-                {...props}
               />
             </div>
           </div>

@@ -18,7 +18,7 @@ const Contact = () => {
             You can reach out to me on my social media.
           </p>
 
-          <ul className="hidden lg:flex items-center gap-6">
+          <ul className="flex items-center gap-6">
             {SOCIAL_LINKS.map((link, index) => (
               <motion.li
                 key={index}

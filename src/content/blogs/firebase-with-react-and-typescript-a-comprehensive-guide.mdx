@@ -1,0 +1,1170 @@
+---
+  title: "Firebase with React and TypeScript: A Comprehensive Guide"
+  summary: "Firebase with React and TypeScript enables building scalable apps by integrating Firebase's backend services with React components, ensuring type safety."
+  image: https://firebase.google.com/static/images/social.png
+  author: 'Sahil Verma'
+  publishedAt: '2024-08-03'
+---
+
+## Introduction
+
+Firebase 9 has revolutionized how we build web applications, offering a suite of tools that simplify backend development and real-time data synchronization. In this comprehensive guide, we'll explore how to leverage Firebase 9 in a React application with TypeScript, focusing on three core Firebase services: Authentication, Firestore, and Cloud Storage.
+
+This guide is structured to take you from the basics to advanced concepts, providing both theoretical knowledge and practical code examples. By the end of this journey, you'll have the skills to build robust, full-stack applications using Firebase and React.
+
+Firebase 9 introduces a modular approach to using Firebase services, allowing for better tree-shaking and reduced bundle sizes. It provides a range of services including real-time database, authentication, hosting, and more, making it an excellent choice for rapid application development.
+
+To get started, let's create a new React project with TypeScript:
+
+```
+npm create vite my-firebase-app --template typescript
+cd my-firebase-app
+```
+
+Install the Firebase SDK:
+
+```
+npm install firebase
+```
+
+Create a new file named `src/firebase.ts` and add the following code:
+
+```
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_APP_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_APP_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_FIREBASE_APP_ID
+};
+
+const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const storage = getStorage(app);
+```
+
+Create a `.env` file in the root of your project and add your Firebase configuration:
+
+```
+VITE_APP_FIREBASE_API_KEY=your_api_key
+VITE_APP_FIREBASE_AUTH_DOMAIN=your_auth_domain
+VITE_APP_FIREBASE_PROJECT_ID=your_project_id
+VITE_APP_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+VITE_APP_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+VITE_APP_FIREBASE_APP_ID=your_app_id
+```
+
+This setup initializes Firebase and exports the necessary services (Auth, Firestore, and Storage) for use throughout your application.
+
+Firebase Authentication provides easy-to-use SDKs and ready-made UI libraries to authenticate users to your app. It supports authentication using passwords, phone numbers, popular federated identity providers like Google, Facebook, and Twitter, and more.
+
+To get started with email/password authentication, we'll create a simple registration form. First, let's create a new component `src/components/Register.tsx`:
+
+```
+import React, { useState } from 'react';
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from '../firebase';
+
+const Register: React.FC = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [displayName, setDisplayName] = useState('');
+
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      await updateProfile(userCredential.user, { displayName });
+      console.log("User registered successfully");
+    } catch (error) {
+      console.error("Error registering user:", error);
+    }
+  };
+
+  return (
+    <form onSubmit={handleRegister}>
+      <input
+        type="text"
+        value={displayName}
+        onChange={(e) => setDisplayName(e.target.value)}
+        placeholder="Display Name"
+        required
+      />
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Email"
+        required
+      />
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Password"
+        required
+      />
+      <button type="submit">Register</button>
+    </form>
+  );
+};
+
+export default Register;
+```
+
+Next, let's create a login component `src/components/Login.tsx`:
+
+```
+import React, { useState } from 'react';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from '../firebase';
+
+const Login: React.FC = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      console.log("User logged in successfully");
+    } catch (error) {
+      console.error("Error logging in:", error);
+    }
+  };
+
+  return (
+    <form onSubmit={handleLogin}>
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Email"
+        required
+      />
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Password"
+        required
+      />
+      <button type="submit">Login</button>
+    </form>
+  );
+};
+
+export default Login;
+```
+
+To manage the authentication state across your app, you can create a custom hook. Create a new file `src/hooks/useAuth.ts`:
+
+```
+import { useState, useEffect } from "react";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { auth } from '../firebase';
+
+export const useAuth = () => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      setLoading(false);
+    });
+
+    return unsubscribe;
+  }, []);
+
+  return { user, loading };
+};
+```
+
+You can now use this hook in your components to access the current user's authentication state:
+
+```
+import React from 'react';
+import { useAuth } from '../hooks/useAuth';
+
+const AuthStatus: React.FC = () => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div>
+      {user ? `Logged in as ${user.displayName}` : "Not logged in"}
+    </div>
+  );
+};
+
+export default AuthStatus;
+```
+
+To implement logout functionality, you can create a simple component:
+
+```
+import React from 'react';
+import { signOut } from "firebase/auth";
+import { auth } from '../firebase';
+
+const Logout: React.FC = () => {
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      console.log("User logged out successfully");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+
+  return <button onClick={handleLogout}>Logout</button>;
+};
+
+export default Logout;
+```
+
+Firestore is a flexible, scalable NoSQL cloud database to store and sync data for client- and server-side development. It offers real-time updates, strong consistency, and offline support, making it an excellent choice for modern web applications.
+
+We've already initialized Firestore in our `firebase.ts` file. Now, let's create a simple data model and implement CRUD operations.
+
+For this example, we'll create a task management system. First, let's define our Task interface in a new file `src/types/Task.ts`:
+
+```
+export interface Task {
+  id?: string;
+  title: string;
+  description: string;
+  completed: boolean;
+  userId: string;
+  createdAt: Date;
+}
+```
+
+Now, let's create a `src/services/taskService.ts` file to handle our Firestore operations:
+
+```
+import { db } from '../firebase';
+import { collection, addDoc, getDoc, getDocs, updateDoc, deleteDoc, doc, query, where } from "firebase/firestore";
+import { Task } from '../types/Task';
+
+// Create a new task
+export const addTask = async (task: Omit<Task, 'id'>): Promise<string> => {
+  try {
+    const docRef = await addDoc(collection(db, "tasks"), task);
+    return docRef.id;
+  } catch (error) {
+    console.error("Error adding task:", error);
+    throw error;
+  }
+};
+
+// Read a single task
+export const getTask = async (taskId: string): Promise<Task | null> => {
+  try {
+    const taskDoc = await getDoc(doc(db, "tasks", taskId));
+    if (taskDoc.exists()) {
+      return { id: taskDoc.id, ...taskDoc.data() } as Task;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error getting task:", error);
+    throw error;
+  }
+};
+
+// Read all tasks for a user
+export const getUserTasks = async (userId: string): Promise<Task[]> => {
+  try {
+    const q = query(collection(db, "tasks"), where("userId", "==", userId));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }) as Task);
+  } catch (error) {
+    console.error("Error getting user tasks:", error);
+    throw error;
+  }
+};
+
+// Update a task
+export const updateTask = async (taskId: string, updates: Partial<Task>): Promise<void> => {
+  try {
+    await updateDoc(doc(db, "tasks", taskId), updates);
+  } catch (error) {
+    console.error("Error updating task:", error);
+    throw error;
+  }
+};
+
+// Delete a task
+export const deleteTask = async (taskId: string): Promise<void> => {
+  try {
+    await deleteDoc(doc(db, "tasks", taskId));
+  } catch (error) {
+    console.error("Error deleting task:", error);
+    throw error;
+  }
+};
+```
+
+Now, let's create a `TaskList` component that uses these Firestore operations. Create a new file `src/components/TaskList.tsx`:
+
+```
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '../hooks/useAuth';
+import { Task } from '../types/Task';
+import { getUserTasks, addTask, updateTask, deleteTask } from '../services/taskService';
+
+const TaskList: React.FC = () => {
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [newTaskTitle, setNewTaskTitle] = useState('');
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      loadTasks();
+    }
+  }, [user]);
+
+  const loadTasks = async () => {
+    if (user) {
+      const userTasks = await getUserTasks(user.uid);
+      setTasks(userTasks);
+    }
+  };
+
+  const handleAddTask = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (user && newTaskTitle.trim()) {
+      const newTask: Omit<Task, 'id'> = {
+        title: newTaskTitle,
+        description: '',
+        completed: false,
+        userId: user.uid,
+        createdAt: new Date()
+      };
+      await addTask(newTask);
+      setNewTaskTitle('');
+      loadTasks();
+    }
+  };
+
+  const handleToggleComplete = async (task: Task) => {
+    await updateTask(task.id!, { completed: !task.completed });
+    loadTasks();
+  };
+
+  const handleDeleteTask = async (taskId: string) => {
+    await deleteTask(taskId);
+    loadTasks();
+  };
+
+  if (!user) {
+    return <div>Please log in to view tasks.</div>;
+  }
+
+  return (
+    <div>
+      <h2>Tasks</h2>
+      <form onSubmit={handleAddTask}>
+        <input
+          type="text"
+          value={newTaskTitle}
+          onChange={(e) => setNewTaskTitle(e.target.value)}
+          placeholder="New task title"
+        />
+        <button type="submit">Add Task</button>
+      </form>
+      <ul>
+        {tasks.map((task) => (
+          <li key={task.id}>
+            <input
+              type="checkbox"
+              checked={task.completed}
+              onChange={() => handleToggleComplete(task)}
+            />
+            {task.title}
+            <button onClick={() => handleDeleteTask(task.id!)}>Delete</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default TaskList;
+```
+
+To implement real-time updates, we can use Firestore's `onSnapshot` method. Let's modify our `getUserTasks` function in `taskService.ts`:
+
+```
+import { collection, query, where, onSnapshot } from "firebase/firestore";
+
+export const getUserTasksRealtime = (userId: string, callback: (tasks: Task[]) => void) => {
+  const q = query(collection(db, "tasks"), where("userId", "==", userId));
+  return onSnapshot(q, (querySnapshot) => {
+    const tasks = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }) as Task);
+    callback(tasks);
+  });
+};
+```
+
+Now, update the `TaskList` component to use this real-time function:
+
+```
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '../hooks/useAuth';
+import { Task } from '../types/Task';
+import { getUserTasksRealtime, addTask, updateTask, deleteTask } from '../services/taskService';
+
+const TaskList: React.FC = () => {
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [newTaskTitle, setNewTaskTitle] = useState('');
+  const { user } = useAuth();
+
+  useEffect(() => {
+    let unsubscribe: () => void;
+    if (user) {
+      unsubscribe = getUserTasksRealtime(user.uid, setTasks);
+    }
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, [user]);
+
+  // ... rest of the component remains the same
+};
+
+export default TaskList;
+```
+
+This implementation now provides real-time updates whenever the tasks collection changes.
+
+Firebase Cloud Storage is designed to help you quickly and easily store and serve user-generated content, such as photos and videos. It provides robust operations to upload and download files, and integrates seamlessly with Firebase Authentication and Security Rules.
+
+We've already initialized Cloud Storage in our `firebase.ts` file. Now, let's create a service to handle file uploads and retrievals.
+
+First, let's create a new file `src/services/storageService.ts`:
+
+```
+import { storage } from '../firebase';
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
+export const uploadFile = async (file: File, userId: string): Promise<string> => {
+  try {
+    const fileRef = ref(storage, `files/${userId}/${file.name}`);
+    const snapshot = await uploadBytes(fileRef, file);
+    const downloadURL = await getDownloadURL(snapshot.ref);
+    return downloadURL;
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    throw error;
+  }
+};
+```
+
+Now, let's create a component to handle file uploads. Create a new file `src/components/FileUploader.tsx`:
+
+```
+import React, { useState } from 'react';
+import { useAuth } from '../hooks/useAuth';
+import { uploadFile } from '../services/storageService';
+
+const FileUploader: React.FC = () => {
+  const [file, setFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [downloadURL, setDownloadURL] = useState<string | null>(null);
+  const { user } = useAuth();
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const handleUpload = async () => {
+    if (file && user) {
+      setUploading(true);
+      try {
+        const url = await uploadFile(file, user.uid);
+        setDownloadURL(url);
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      } finally {
+        setUploading(false);
+      }
+    }
+  };
+
+  return (
+    <div>
+      <input type="file" onChange={handleFileChange} />
+      <button onClick={handleUpload} disabled={!file || uploading}>
+        {uploading ? 'Uploading...' : 'Upload'}
+      </button>
+      {downloadURL && (
+        <div>
+          <p>File uploaded successfully!</p>
+          <a href={downloadURL} target="_blank" rel="noopener noreferrer">View File</a>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default FileUploader;
+```
+
+To retrieve and display files, we can use the download URL we got after uploading. Let's create a component to display a list of uploaded files. First, we need to store the file metadata in Firestore.
+
+Update the `uploadFile` function in `storageService.ts`:
+
+```
+import { storage, db } from '../firebase';
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { collection, addDoc } from "firebase/firestore";
+
+export const uploadFile = async (file: File, userId: string): Promise<string> => {
+  try {
+    const fileRef = ref(storage, `files/${userId}/${file.name}`);
+    const snapshot = await uploadBytes(fileRef, file);
+    const downloadURL = await getDownloadURL(snapshot.ref);
+
+    // Store file metadata in Firestore
+    await addDoc(collection(db, "files"), {
+      name: file.name,
+      type: file.type,
+      size: file.size,
+      userId: userId,
+      downloadURL: downloadURL,
+      createdAt: new Date()
+    });
+
+    return downloadURL;
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    throw error;
+  }
+};
+```
+
+Now, let's create a component to display the list of files. Create a new file `src/components/FileList.tsx`:
+
+```
+import React, { useEffect, useState } from 'react';
+import { useAuth } from '../hooks/useAuth';
+import { collection, query, where, onSnapshot } from "firebase/firestore";
+import { db } from '../firebase';
+
+interface FileMetadata {
+  id: string;
+  name: string;
+  type: string;
+  size: number;
+  downloadURL: string;
+  createdAt: Date;
+}
+
+const FileList: React.FC = () => {
+  const [files, setFiles] = useState<FileMetadata[]>([]);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      const q = query(collection(db, "files"), where("userId", "==", user.uid));
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const fileList: FileMetadata[] = [];
+        querySnapshot.forEach((doc) => {
+          fileList.push({ id: doc.id, ...doc.data() } as FileMetadata);
+        });
+        setFiles(fileList);
+      });
+
+      return () => unsubscribe();
+    }
+  }, [user]);
+
+  return (
+    <div>
+      <h2>Your Files</h2>
+      <ul>
+        {files.map((file) => (
+          <li key={file.id}>
+            <a href={file.downloadURL} target="_blank" rel="noopener noreferrer">
+              {file.name}
+            </a>
+            <span> ({(file.size / 1024 / 1024).toFixed(2)} MB)</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default FileList;
+```
+
+To allow users to delete their files, we need to update our `storageService.ts` and add a delete function:
+
+```
+import { storage, db } from '../firebase';
+import { ref, deleteObject } from "firebase/storage";
+import { doc, deleteDoc } from "firebase/firestore";
+
+export const deleteFile = async (fileId: string, filePath: string): Promise<void> => {
+  try {
+    // Delete file from Storage
+    const fileRef = ref(storage, filePath);
+    await deleteObject(fileRef);
+
+    // Delete file metadata from Firestore
+    await deleteDoc(doc(db, "files", fileId));
+  } catch (error) {
+    console.error("Error deleting file:", error);
+    throw error;
+  }
+};
+```
+
+Now, let's update our `FileList` component to include a delete button for each file:
+
+```
+import React, { useEffect, useState } from 'react';
+import { useAuth } from '../hooks/useAuth';
+import { collection, query, where, onSnapshot } from "firebase/firestore";
+import { db } from '../firebase';
+import { deleteFile } from '../services/storageService';
+
+// ... (previous FileMetadata interface)
+
+const FileList: React.FC = () => {
+  // ... (previous state and useEffect)
+
+  const handleDelete = async (file: FileMetadata) => {
+    if (window.confirm(`Are you sure you want to delete ${file.name}?`)) {
+      try {
+        await deleteFile(file.id, `files/${user!.uid}/${file.name}`);
+      } catch (error) {
+        console.error("Error deleting file:", error);
+      }
+    }
+  };
+
+  return (
+    <div>
+      <h2>Your Files</h2>
+      <ul>
+        {files.map((file) => (
+          <li key={file.id}>
+            <a href={file.downloadURL} target="_blank" rel="noopener noreferrer">
+              {file.name}
+            </a>
+            <span> ({(file.size / 1024 / 1024).toFixed(2)} MB)</span>
+            <button onClick={() => handleDelete(file)}>Delete</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default FileList;
+```
+
+Proper error handling is crucial for a good user experience. Let's create a custom hook for form validation and error handling:
+
+```
+// src/hooks/useForm.ts
+import { useState } from 'react';
+
+interface FormErrors {
+  [key: string]: string;
+}
+
+export const useForm = <T extends { [key: string]: any }>(initialState: T, validate: (values: T) => FormErrors) => {
+  const [values, setValues] = useState<T>(initialState);
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setValues({
+      ...values,
+      [name]: value
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>, onSubmit: (values: T) => Promise<void>) => {
+    e.preventDefault();
+    const validationErrors = validate(values);
+    setErrors(validationErrors);
+    setIsSubmitting(true);
+
+    if (Object.keys(validationErrors).length === 0) {
+      try {
+        await onSubmit(values);
+      } catch (error) {
+        console.error("Form submission error:", error);
+        setErrors({ submit: "An error occurred while submitting the form" });
+      }
+    }
+
+    setIsSubmitting(false);
+  };
+
+  return { values, errors, isSubmitting, handleChange, handleSubmit };
+};
+```
+
+Now, let's use this hook in our Register component:
+
+```
+// src/components/Register.tsx
+import React from 'react';
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from '../firebase';
+import { useForm } from '../hooks/useForm';
+
+interface RegisterForm {
+  displayName: string;
+  email: string;
+  password: string;
+}
+
+const initialState: RegisterForm = {
+  displayName: '',
+  email: '',
+  password: ''
+};
+
+const validate = (values: RegisterForm) => {
+  const errors: { [key: string]: string } = {};
+  if (!values.displayName) {
+    errors.displayName = "Display name is required";
+  }
+  if (!values.email) {
+    errors.email = "Email is required";
+  } else if (!/\S+@\S+\.\S+/.test(values.email)) {
+    errors.email = "Email is invalid";
+  }
+  if (!values.password) {
+    errors.password = "Password is required";
+  } else if (values.password.length < 6) {
+    errors.password = "Password must be at least 6 characters";
+  }
+  return errors;
+};
+
+const Register: React.FC = () => {
+  const { values, errors, isSubmitting, handleChange, handleSubmit } = useForm<RegisterForm>(initialState, validate);
+
+  const onSubmit = async (values: RegisterForm) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+      await updateProfile(userCredential.user, { displayName: values.displayName });
+      console.log("User registered successfully");
+    } catch (error) {
+      console.error("Error registering user:", error);
+      throw error;
+    }
+  };
+
+  return (
+    <form onSubmit={(e) => handleSubmit(e, onSubmit)}>
+      <div>
+        <input
+          type="text"
+          name="displayName"
+          value={values.displayName}
+          onChange={handleChange}
+          placeholder="Display Name"
+        />
+        {errors.displayName && <p>{errors.displayName}</p>}
+      </div>
+      <div>
+        <input
+          type="email"
+          name="email"
+          value={values.email}
+          onChange={handleChange}
+          placeholder="Email"
+        />
+        {errors.email && <p>{errors.email}</p>}
+      </div>
+      <div>
+        <input
+          type="password"
+          name="password"
+          value={values.password}
+          onChange={handleChange}
+          placeholder="Password"
+        />
+        {errors.password && <p>{errors.password}</p>}
+      </div>
+      <button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? 'Registering...' : 'Register'}
+      </button>
+      {errors.submit && <p>{errors.submit}</p>}
+    </form>
+  );
+};
+
+export default Register;
+```
+
+For larger applications, it's beneficial to use a state management solution. Let's use React's Context API to manage our authentication state:
+
+```
+// src/contexts/AuthContext.tsx
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { User } from 'firebase/auth';
+import { auth } from '../firebase';
+
+interface AuthContextType {
+  user: User | null;
+  loading: boolean;
+}
+
+const AuthContext = createContext<AuthContextType>({ user: null, loading: true });
+
+export const useAuth = () => useContext(AuthContext);
+
+export const AuthProvider: React.FC = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setUser(user);
+      setLoading(false);
+    });
+
+    return unsubscribe;
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ user, loading }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+```
+
+Wrap your main App component with this provider:
+
+```
+// src/App.tsx
+import React from 'react';
+import { AuthProvider } from './contexts/AuthContext';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Home from './components/Home';
+import Register from './components/Register';
+import Login from './components/Login';
+import PrivateRoute from './components/PrivateRoute';
+
+const App: React.FC = () => {
+  return (
+    <AuthProvider>
+      <Router>
+        <Switch>
+          <PrivateRoute exact path="/" component={Home} />
+          <Route path="/register" component={Register} />
+          <Route path="/login" component={Login} />
+        </Switch>
+      </Router>
+    </AuthProvider>
+  );
+};
+
+export default App;
+```
+
+To keep your components clean and reusable, create custom hooks for common Firebase operations:
+
+```
+// src/hooks/useFirestore.ts
+import { useState, useEffect } from 'react';
+import { db } from '../firebase';
+import { collection, query, where, onSnapshot, QueryConstraint } from "firebase/firestore";
+
+export const useFirestoreQuery = <T>(
+  collectionName: string,
+  constraints: QueryConstraint[] = []
+) => {
+  const [documents, setDocuments] = useState<T[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    const q = query(collection(db, collectionName), ...constraints);
+    const unsubscribe = onSnapshot(q,
+      (snapshot) => {
+        const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as T));
+        setDocuments(docs);
+        setLoading(false);
+      },
+      (err) => {
+        console.error("Firestore query error:", err);
+        setError(err);
+        setLoading(false);
+      }
+    );
+
+    return unsubscribe;
+  }, [collectionName, constraints]);
+
+  return { documents, loading, error };
+};
+```
+
+You can use this hook in your components like this:
+
+```
+const TaskList: React.FC = () => {
+  const { user } = useAuth();
+  const { documents: tasks, loading, error } = useFirestoreQuery<Task>(
+    'tasks',
+    [where("userId", "==", user?.uid)]
+  );
+
+  if (loading) return <div>Loading tasks...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
+  return (
+    <ul>
+      {tasks.map(task => (
+        <li key={task.id}>{task.title}</li>
+      ))}
+    </ul>
+  );
+};
+```
+
+Don't forget to set up proper security rules for your Firestore and Storage. Here's an example of Firestore security rules:
+
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    match /tasks/{taskId} {
+      allow read, write: if request.auth != null && request.auth.uid == resource.data.userId;
+    }
+    match /files/{fileId} {
+      allow read, write: if request.auth != null && request.auth.uid == resource.data.userId;
+    }
+  }
+}
+```
+
+And for Storage:
+
+```
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /files/{userId}/{allPaths=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}
+```
+
+To optimize your Firebase usage:
+
+1. Use Firebase SDK's built-in offline persistence for Firestore.
+2. Implement pagination for large data sets.
+3. Use Firebase Performance Monitoring to identify bottlenecks.
+4. Optimize your Firebase Security Rules to avoid unnecessary reads.
+
+For testing Firebase functionality, you can use the Firebase Emulator Suite. Set up your tests to use the emulator instead of the production Firebase services.
+
+Here's an example of how to set up Jest tests with the Firebase emulator:
+
+```
+// src/setupTests.ts
+import { initializeApp } from 'firebase/app';
+import { getAuth, connectAuthEmulator } from 'firebase/auth';
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
+
+const app = initializeApp({
+  projectId: 'demo-test-project',
+});
+
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+connectAuthEmulator(auth, 'http://localhost:9099');
+connectFirestoreEmulator(db, 'localhost', 8080);
+```
+
+Then in your test file:
+
+```
+// src/components/TaskList.test.tsx
+import React from 'react';
+import { render, screen, waitFor } from '@testing-library/react';
+import { AuthProvider } from '../contexts/AuthContext';
+import TaskList from './TaskList';
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from '../firebase';
+
+test('renders task list', async () => {
+  // Add a test task to Firestore emulator
+  await addDoc(collection(db, 'tasks'), {
+    title: 'Test Task',
+    userId: 'testuser',
+    completed: false
+  });
+
+  render(
+    <AuthProvider>
+      <TaskList />
+    </AuthProvider>
+  );
+
+  await waitFor(() => {
+    expect(screen.getByText('Test Task')).toBeInTheDocument();
+  });
+});
+```
+
+Security rules are a critical component of Firebase that allow you to control access to your data and validate operations in Firestore and Cloud Storage. They act as your application's first line of defense, ensuring that only authorized users can read or write data.
+
+Firestore security rules are written in a domain-specific language that allows you to specify conditions for read and write operations.
+
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Rules go here
+  }
+}
+```
+
+- `allow read`: Allows get and list operations
+- `allow write`: Allows create, update, and delete operations
+- `allow get`: Allows only get operations
+- `allow list`: Allows only list operations
+- `allow create`: Allows only document creation
+- `allow update`: Allows only document updates
+- `allow delete`: Allows only document deletion
+
+To check if a user is authenticated:
+
+```
+allow read, write: if request.auth != null;
+```
+
+To restrict access to user-specific data:
+
+```
+match /users/{userId} {
+  allow read, write: if request.auth != null && request.auth.uid == userId;
+}
+```
+
+You can validate data before allowing write operations:
+
+```
+match /tasks/{taskId} {
+  allow create: if request.auth != null
+                && request.resource.data.title is string
+                && request.resource.data.title.size() > 0
+                && request.resource.data.title.size() <= 100;
+}
+```
+
+You can create more complex rules using functions:
+
+```
+function isOwner(userId) {
+  return request.auth != null && request.auth.uid == userId;
+}
+
+match /tasks/{taskId} {
+  allow read: if isOwner(resource.data.userId);
+  allow create: if isOwner(request.resource.data.userId)
+                && request.resource.data.title is string
+                && request.resource.data.title.size() > 0
+                && request.resource.data.title.size() <= 100;
+  allow update: if isOwner(resource.data.userId)
+                && (!request.resource.data.diff(resource.data).affectedKeys()
+                    .hasAny(['userId', 'createdAt']));
+  allow delete: if isOwner(resource.data.userId);
+}
+```
+
+Cloud Storage security rules are similar to Firestore rules but are specifically designed for file operations.
+
+```
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Rules go here
+  }
+}
+```
+
+To restrict access to user-specific files:
+
+```
+match /files/{userId}/{fileName} {
+  allow read, write: if request.auth != null && request.auth.uid == userId;
+}
+```
+
+You can validate file types:
+
+```
+match /images/{imageId} {
+  allow write: if request.resource.contentType.matches('image/.*');
+}
+```
+
+You can limit the size of uploaded files:
+
+```
+match /files/{fileName} {
+  allow write: if request.resource.size < 5 * 1024 * 1024; // 5MB
+}
+```
+
+You can combine multiple conditions:
+
+```
+match /files/{userId}/{fileName} {
+  allow read: if request.auth != null && request.auth.uid == userId;
+  allow write: if request.auth != null
+               && request.auth.uid == userId
+               && request.resource.size < 5 * 1024 * 1024
+               && request.resource.contentType.matches('image/.*');
+}
+```
+
+1. **Principle of Least Privilege**: Give users the minimum level of access they need.
+2. **Validate All Data**: Always validate data on the server-side, even if you're also doing client-side validation.
+3. **Use Security Rules to Enforce Data Structure**: Ensure that all written data conforms to your expected structure.
+4. **Keep Rules Simple**: Complex rules can be hard to maintain and may impact performance.
+5. **Test Your Rules**: Use the Firebase Emulator Suite to test your security rules thoroughly.
+6. **Use Custom Claims for Role-Based Access**: For more complex authorization scenarios, use custom claims in Firebase Authentication.
+7. **Monitor and Audit**: Regularly review your security rules and monitor for any unauthorized access attempts.
+8. **Don't Rely on Client-Side Security**: Remember that any client-side checks can be bypassed, so always enforce security on the server.
+9. **Keep Sensitive Data Out of Rules**: Don't include API keys or other secrets in your security rules.
+10. **Use Firestore and Storage Together**: For files with metadata, store the metadata in Firestore and use its rules in conjunction with Storage rules.
+
+By following these guidelines and understanding how to craft effective security rules, you can ensure that your Firebase application remains secure and that your data is protected from unauthorized access or manipulation.
