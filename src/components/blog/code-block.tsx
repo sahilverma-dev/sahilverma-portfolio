@@ -1,23 +1,8 @@
-"use client";
+import { highlight } from "sugar-high";
 
-import { JSX } from "react";
-
-interface CodeBlockProps {
-  children: JSX.IntrinsicElements;
-  language: string;
-}
-
-const CodeBlock: React.FC<CodeBlockProps> = ({ children }) => {
-  return (
-    <div>
-      <button
-        onClick={() => {
-          console.log({ children });
-        }}
-      >
-        click
-      </button>
-    </div>
-  );
+const CodeBlock = ({ children, ...props }: { children: string }) => {
+  const codeHTML = highlight(children);
+  return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
 };
+
 export default CodeBlock;

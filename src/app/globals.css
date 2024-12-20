@@ -6,6 +6,18 @@
   --background: 210, 100%, 6%;
   --foreground: 0, 0%, 100%;
   --primary: 21deg 100% 46%;
+
+  /* code */
+
+  --sh-class: #4c97f8;
+  --sh-identifier: white;
+  --sh-keyword: #f47067;
+  --sh-string: #0fa295;
+  --sh-property: #4e8fdf;
+  --sh-entity: #6eafad;
+  --sh-jsxliterals: #bf7db6;
+  --sh-sign: #8996a3;
+  --sh-comment: #a19595;
 }
 
 html {
