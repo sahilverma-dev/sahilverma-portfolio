@@ -1,5 +1,3 @@
-import { Project } from "@/interfaces";
-
 // icons
 // import { RiNpmjsLine as NpmIcon } from "react-icons/ri";
 import {
@@ -13,9 +11,11 @@ import { MdOpenInNew as OpenIcon } from "react-icons/md";
 import { Badge } from "./ui/badge";
 import AnimationContainer from "./animated/animated-container";
 import Link from "next/link";
+import { ProjectMetadata } from "@/lib/project";
+import { formatDate } from "@/lib/utils";
 
 interface Props {
-  project: Project;
+  project: ProjectMetadata;
 }
 
 // const ProjectIcon: React.FC<{ type: Project["type"] }> = ({ type }) => {
@@ -44,7 +44,7 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
           <div className="absolute flex items-center gap-2 top-2 right-2 ">
             {/* <ProjectIcon type={project.type} /> */}
             <a
-              href={project.links}
+              href={project.link}
               target="_blank"
               rel="noreferrer"
               className="p-4 bg-black/10 rounded-full backdrop-blur hover:bg-black/30 transition-all"
@@ -52,7 +52,7 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
               <OpenIcon />
             </a>
             <a
-              href={project.links}
+              href={project.github}
               target="_blank"
               rel="noreferrer"
               className="p-4 bg-black/10 rounded-full backdrop-blur hover:bg-black/30 transition-all"
@@ -60,7 +60,7 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
               <GithubIcon />
             </a>
           </div>
-          <Link href={project.href}>
+          <Link href={`/projects/${project.slug}`}>
             <img
               src={project.image}
               alt={project.title}
@@ -70,12 +70,12 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
           {/* <div className="overlay" /> */}
         </div>
         <div className="space-y-2">
-          <Link href={project.href}>
+          <Link href={`/projects/${project.slug}`}>
             <h3 className="font-semibold group-hover:underline group-hover:text-primary transition-all tracking-tight mt-1 text-base md:text-xl">
               {project.title}
             </h3>
           </Link>
-          <time className="font-sans text-xs">{project.dates}</time>
+          <time className="font-sans text-xs">{formatDate(project.date)}</time>
           <div className="hidden font-sans text-xs underline print:visible" />
           <div className="prose max-w-full text-pretty font-sans text-xs text-muted-foreground dark:prose-invert">
             <p>{project.description}</p>
@@ -85,7 +85,7 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
           {project.stack.map((stack) => (
             <Badge
               key={stack}
-              className="bg-white/10 hover:bg-white/20 backdrop-blur"
+              className="bg-white/10 capitalize hover:bg-white/20 backdrop-blur"
             >
               {stack}
             </Badge>

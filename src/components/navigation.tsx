@@ -37,7 +37,7 @@ const Navigation = () => {
     <header
       className={cn(
         "z-[99999] fixed w-full top-0 left-0 transition-all",
-        bigNav ? "bg-black/50 backdrop-blur" : "md:py-6 bg-transparent "
+        bigNav ? "bg-black/10 backdrop-blur" : "md:py-6 bg-transparent "
       )}
     >
       <div

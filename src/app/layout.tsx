@@ -13,6 +13,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://sahilverma.dev"),
   title: {
     default: "Sahil Verma",
     template: `%s - Sahil Verma`,
