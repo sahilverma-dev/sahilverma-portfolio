@@ -11,7 +11,7 @@ const MyPhoto = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="border border-white/10 w-32 transition duration-300 ease-out overflow-hidden rounded-3xl lg:w-96 aspect-square"
+      className="border border-white/10  transition duration-300 ease-out overflow-hidden rounded-3xl lg:w-96 aspect-square"
     >
       <Image
         src="/images/sahil-verma.png"

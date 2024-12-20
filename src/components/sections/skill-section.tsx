@@ -5,7 +5,7 @@ import { Badge } from "../ui/badge";
 const SkillsSection = () => {
   return (
     <AnimationContainer customClassName="w-full ">
-      <h2 className="mb-8 text-2xl font-bold tracking-tight text-center text-white lg:text-start">
+      <h2 className="mb-8 text-2xl font-bold tracking-tight text-white lg:text-start">
         Skills
       </h2>
 
