@@ -81,7 +81,7 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
           <time className="font-sans text-xs">{formatDate(project.date)}</time>
           <div className="hidden font-sans text-xs underline print:visible" />
           <div className="prose max-w-full text-pretty font-sans text-xs text-muted-foreground dark:prose-invert">
-            <p>{project.description}</p>
+            <p className="line-clamp-2">{project.description}</p>
           </div>
         </div>
         <div className=" flex flex-wrap gap-2">

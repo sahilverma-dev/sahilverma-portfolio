@@ -20,6 +20,12 @@ const nextConfig = {
       {
         hostname: "lh3.googleusercontent.com",
       },
+      {
+        hostname: "camo.githubusercontent.com",
+      },
+      {
+        hostname: "raw.githubusercontent.com",
+      },
     ],
   },
 };

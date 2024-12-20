@@ -34,8 +34,9 @@ const BlogImage: React.FC<BlogImageProps> = ({
     <>
       {src && (
         <motion.div
-          layout
-          layoutId="blog-image"
+          // TODO: add layout
+          // layout
+          // layoutId="blog-image"
           className={`relative rounded-2xl my-4 overflow-hidden cursor-pointer`}
           onClick={() => setOpen(true)}
         >
@@ -75,8 +76,8 @@ const BlogImage: React.FC<BlogImageProps> = ({
             />
             <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full max-w-5xl p-4">
               <motion.img
-                layout
-                layoutId="blog-image"
+                // layout
+                // layoutId="blog-image"
                 src={src}
                 alt={alt}
                 className={cn(

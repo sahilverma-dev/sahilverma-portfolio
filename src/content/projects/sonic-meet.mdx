@@ -1,0 +1,107 @@
+---
+title: "Sonic Meet"
+description: "Sonic Meet is a video-chatting service designed primarily for business, office and educational use, which lets colleagues chat over video and text."
+date: "2022-06-10"
+updated: null
+type: "web"
+stack:
+  [
+    "react",
+    "tailwind",
+    "framer motion",
+    "webrtc",
+    "socket.io",
+    "nodejs",
+    "express",
+  ]
+slug: "sonic-meet"
+image: "https://github.com/sahilverma-dev/sonic-meet/raw/main/screenshot/sonic-meet.png?raw=true"
+featured: false
+link: "https://sonic-meet.netlify.app/"
+github: "https://github.com/sahilverma-dev/sonic-meet"
+---
+
+This project can be described as "a video meeting experience with one goal: make joining meetings effortless". We connect people through frictionless video, voice, chat, and content sharing and enable face-to-face video experiences for thousands of people in a single meeting across disparate devices and locations.
+
+## Live Website
+
+[https://sonic-meet.netlify.app/](https://sonic-meet.netlify.app/)
+
+## Home Page
+
+![Home](https://github.com/sahilverma-dev/sonic-meet/raw/main/screenshot/home.png)
+
+## Room Page
+
+![Explore](https://github.com/sahilverma-dev/sonic-meet/raw/main/screenshot/room.png)
+
+## Run Locally
+
+Clone the project
+
+```shell
+  git clone https://github.com/sahilverma-dev/sonic-meet
+```
+
+Go to the project directory
+
+```shell
+  cd sonic-meet
+```
+
+Install dependencies on client and backend
+
+```shell
+  cd client
+  npm install
+```
+
+```shell
+  cd backend
+  npm install
+```
+
+Adding Firebase
+
+- Go to [Firebase console](https://console.firebase.google.com/).
+- Crete a new project in Firebase.
+- Enable Firesbase Authentication and FireStore.
+- Go to the setting of the project and copy your credentials.
+- Change [Firebase config](https://github.com/sahilverma-dev/sonic-meet/blob/main/client/src/firebase/config.js) and use your own.
+
+[firebase/config.js](https://github.com/sahilverma-dev/sonic-meet/blob/main/client/src/firebase/config.js)
+
+```js
+const firebaseConfig = {
+  apiKey: "xxxxxxx-xxxxxxxxx-xxxxxxxxxx-xxxxxxxxxxxx",
+  authDomain: "xxxxxxx-xxxxxxxxx-xxxxxx",
+  databaseURL: "xxxxxxx-xxxxxxxxx-xxxxxx",
+  projectId: "xxxxxxx-xxxxxxxxx-xxxxxx",
+  storageBucket: "xxxxxxx-xxxxxxxxx-xxxxxx",
+  messagingSenderId: "xxxxxxx-xxxxxxxxx-xxxxxx",
+  appId: "xxxxxxx-xxxxxxxxx-xxxxxx",
+};
+```
+
+Start the client server
+
+```shell
+  npm run start # on client folder and it will run on localhost:3000
+```
+
+Start the backend server
+
+```shell
+  npm run start # on backend folder and it will run a server on localhost:5000
+  npm run dev # on backend folder and it will run a development server on localhost:5000
+```
+
+And you are ready to go!
+
+## Tech Stack
+
+React, Firebase 9, TailwindCSS 3, simple-peer, Node JS, Socket IO
+
+## Feedback
+
+If you have any feedback, please reach out to us at [sahilverma.webdev@gmail.com](mailto:sahilverma.webdev@gmail.com)
