@@ -1,6 +1,13 @@
 import AnimationContainer from "@/components/animated/animated-container";
 import AnimatedTitle from "@/components/animated/animated-title";
 import ProjectCard from "@/components/project-card";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Projects",
+  description:
+    "My projects include web applications, extensions, and open source contributions.",
+};
 
 const Projects = () => {
   return (

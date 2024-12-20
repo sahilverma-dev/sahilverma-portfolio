@@ -1,6 +1,11 @@
 import MyPhoto from "@/components/my-photo";
 import AboutMe from "@/components/sections/about-me";
 import SkillsSection from "@/components/sections/skill-section";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Me",
+};
 
 const About = () => {
   return (

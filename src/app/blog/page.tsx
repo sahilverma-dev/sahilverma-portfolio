@@ -1,6 +1,12 @@
 import AnimatedTitle from "@/components/animated/animated-title";
 import BlogCard from "@/components/blog-card";
 import { getBlogs } from "@/lib/blog";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Blogs",
+  description: "My blogs",
+};
 
 const Blog = async () => {
   const blogs = await getBlogs();

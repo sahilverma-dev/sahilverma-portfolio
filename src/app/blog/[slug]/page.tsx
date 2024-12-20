@@ -1,14 +1,42 @@
-import { getBlogBySlug } from "@/lib/blog";
+import { getBlogBySlug, getBlogs } from "@/lib/blog";
 import { notFound } from "next/navigation";
 import MDXContent from "@/components/mdx-content";
 import Link from "next/link";
 import { ArrowLeftIcon } from "lucide-react";
+
 import { formatDate } from "@/lib/utils";
 
-type Params = Promise<{ params: { slug: string } }>;
+export const generateMetadata = async ({
+  params,
+}: {
+  params: { slug: string };
+}) => {
+  const post = await getBlogBySlug(params.slug);
 
-const Blog = async (props: Params) => {
-  const { slug } = (await props).params;
+  if (!post) {
+    return {
+      title: "Blog",
+    };
+  }
+
+  const { metadata } = post;
+  const { title, summary } = metadata;
+
+  return {
+    title,
+    description: summary,
+  };
+};
+
+export async function generateStaticParams() {
+  const blogs = await getBlogs();
+  const slugs = blogs.map((blog) => ({ slug: blog.slug }));
+
+  return slugs;
+}
+
+const Blog = async (props: { params: Promise<{ slug: string }> }) => {
+  const { slug } = await props.params;
   const post = await getBlogBySlug(slug);
 
   if (!post) {

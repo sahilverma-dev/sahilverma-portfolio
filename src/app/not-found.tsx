@@ -1,7 +1,13 @@
 import { ArrowLeftIcon } from "lucide-react";
+import { Metadata } from "next";
 import Link from "next/link";
 
-export default function NotFound() {
+export const metadata: Metadata = {
+  title: "Not Found",
+  description: "Page not found",
+};
+
+const NotFound = () => {
   return (
     <section className="pb-24 pt-40">
       <div className="min-h-full px-4 sm:px-6 sm:py-24 md:grid md:place-items-center lg:px-8">
@@ -34,4 +40,6 @@ export default function NotFound() {
       </div>
     </section>
   );
-}
+};
+
+export default NotFound;
