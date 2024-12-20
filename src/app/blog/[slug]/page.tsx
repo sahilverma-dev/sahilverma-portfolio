@@ -6,12 +6,13 @@ import { ArrowLeftIcon } from "lucide-react";
 
 import { formatDate } from "@/lib/utils";
 
-export const generateMetadata = async ({
-  params,
-}: {
-  params: { slug: string };
-}) => {
-  const post = await getBlogBySlug(params.slug);
+interface Props {
+  params: Promise<{ slug: string }>;
+}
+
+export const generateMetadata = async ({ params }: Props) => {
+  const { slug } = await params;
+  const post = await getBlogBySlug(slug);
 
   if (!post) {
     return {
@@ -20,11 +21,19 @@ export const generateMetadata = async ({
   }
 
   const { metadata } = post;
-  const { title, summary } = metadata;
+  const { title, summary, image } = metadata;
 
   return {
     title,
     description: summary,
+    openGraph: {
+      images: [image],
+      title,
+      description: summary,
+    },
+    alternates: {
+      canonical: `/projects/${slug}`,
+    },
   };
 };
 
@@ -35,8 +44,9 @@ export async function generateStaticParams() {
   return slugs;
 }
 
-const Blog = async (props: { params: Promise<{ slug: string }> }) => {
-  const { slug } = await props.params;
+const Blog = async ({ params }: Props) => {
+  const { slug } = await params;
+
   const post = await getBlogBySlug(slug);
 
   if (!post) {

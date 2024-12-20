@@ -6,12 +6,13 @@ import { ArrowLeftIcon } from "lucide-react";
 
 import { formatDate } from "@/lib/utils";
 
-export const generateMetadata = async ({
-  params,
-}: {
-  params: { slug: string };
-}) => {
-  const project = await getProjectBySlug(params.slug);
+interface Props {
+  params: Promise<{ slug: string }>;
+}
+
+export const generateMetadata = async ({ params }: Props) => {
+  const { slug } = await params;
+  const project = await getProjectBySlug(slug);
 
   if (!project) {
     return {
@@ -31,7 +32,7 @@ export const generateMetadata = async ({
       description,
     },
     alternates: {
-      canonical: `/projects/${params.slug}`,
+      canonical: `/projects/${slug}`,
     },
   };
 };
@@ -43,8 +44,9 @@ export async function generateStaticParams() {
   return slugs;
 }
 
-const Project = async (props: { params: Promise<{ slug: string }> }) => {
-  const { slug } = await props.params;
+const Project = async ({ params }: Props) => {
+  const { slug } = await params;
+
   const project = await getProjectBySlug(slug);
 
   if (!project) {
