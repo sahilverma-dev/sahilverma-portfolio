@@ -15,8 +15,6 @@ html {
 body {
   color: hsl(var(--foreground));
   background: hsl(var(--background));
-  font-family: "Poppins", -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    sans-serif;
 }
 
 /* gradients */
