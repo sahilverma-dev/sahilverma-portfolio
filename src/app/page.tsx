@@ -1,5 +1,6 @@
 import AboutMe from "@/components/sections/about-me";
 import Hero from "@/components/sections/hero-section";
+import ProjectsSection from "@/components/sections/project-sections";
 import SkillsSection from "@/components/sections/skill-section";
 
 const Home = () => {
@@ -8,6 +9,7 @@ const Home = () => {
       <Hero />
       <AboutMe />
       <SkillsSection />
+      <ProjectsSection />
     </div>
   );
 };
