@@ -8,10 +8,12 @@ const AboutMe = () => {
       </h2>
 
       <p className="w-full text-base font-normal leading-7 text-justify text-neutral-200">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic deleniti
-        quam eaque! Repudiandae quas accusantium officia hic provident animi
-        exercitationem delectus error nesciunt voluptas, tempore sed ab
-        consequatur eos sunt.
+        Hi, I&apos;m Sahil Verm! I&apos;m a passionate developer with a love for
+        turning ideas into digital experiences. With a focus on clean code and
+        creative solutions, I enjoy building projects that solve real-world
+        problems. When I&apos;m not coding, I&apos;m exploring new technologies,
+        learning, and sharing my journey through blog posts. Join me as I
+        explore the intersection of tech and creativity!
       </p>
     </AnimationContainer>
   );

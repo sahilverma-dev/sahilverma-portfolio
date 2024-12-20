@@ -14,8 +14,9 @@ const BlogSection = async () => {
       </h2>
 
       <p className="w-full text-base font-normal leading-7 text-justify text-neutral-200">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore a quas
-        sit cum minima, nostrum at asperiores tempore obcaecati veniam!
+        Welcome to my blog, a place where creativity and technology come to
+        life. Here, I share my journey through coding, problem-solving, and the
+        stories behind the projects I create.
       </p>
       <div className="space-y-6 md:space-y-12 py-6 lg:py-10 sm:grid-cols-2">
         {blogs.map((blog) => (

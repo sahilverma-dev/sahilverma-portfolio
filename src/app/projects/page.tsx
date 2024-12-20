@@ -18,8 +18,8 @@ const Projects = async () => {
       <AnimatedTitle title="Projects" />
       <AnimationContainer>
         <p className="w-full text-base font-normal leading-7 text-justify text-neutral-200">
-          I&apos;ve built a variety of projects ranging from websites, apps,
-          extensions, open source projects and more.
+          Here are some of the projects I&apos;ve worked on, showcasing my
+          skills in web development, problem-solving, and creativity.
         </p>
         <div className="grid grid-cols-1 gap-3 py-6 lg:py-10 sm:grid-cols-2">
           {projects.map((project) => (

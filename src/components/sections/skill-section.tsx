@@ -10,10 +10,8 @@ const SkillsSection = () => {
       </h2>
 
       <p className="w-full text-base font-normal leading-7 text-justify text-neutral-200">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic deleniti
-        quam eaque! Repudiandae quas accusantium officia hic provident animi
-        exercitationem delectus error nesciunt voluptas, tempore sed ab
-        consequatur eos sunt.
+        I specialize in building seamless, user-friendly applications using
+        modern web technologies. My toolkit includes:
       </p>
 
       <div className="flex flex-col items-start mt-8">
