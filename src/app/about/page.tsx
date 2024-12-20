@@ -1,22 +1,15 @@
-"use client";
-import { motion } from "motion/react";
-
-import Image from "next/image";
+import MyPhoto from "@/components/my-photo";
+import AboutMe from "@/components/sections/about-me";
+import SkillsSection from "@/components/sections/skill-section";
 
 const About = () => {
   return (
-    <div>
-      <motion.div layout layoutId="sahil-verma">
-        <Image
-          src="/images/sahil-verma.png"
-          alt="Sahil Verma"
-          height={2190}
-          width={2190}
-          sizes="30vw"
-          priority
-          className="object-cover object-top w-32  transition duration-300 ease-out rounded-3xl lg:w-96 aspect-square"
-        />
-      </motion.div>
+    <div className="space-y-6 lg:space-y-12">
+      <div className="flex gap-6 items-center">
+        <MyPhoto />
+        <AboutMe />
+      </div>
+      <SkillsSection />
     </div>
   );
 };

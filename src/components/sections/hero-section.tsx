@@ -1,13 +1,10 @@
-"use client";
-
-import Image from "next/image";
 import AnimationContainer from "../animated/animated-container";
 import { buttonVariants } from "../ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { motion } from "motion/react";
 
 import { RiSpeakLine as SpeakIcon } from "react-icons/ri";
+import MyPhoto from "../my-photo";
 
 const Hero = () => {
   return (
@@ -49,21 +46,7 @@ const Hero = () => {
       </AnimationContainer>
 
       <AnimationContainer customClassName="mb-8 relative lg:mb-0">
-        <motion.div
-          layout
-          layoutId="sahil-verma"
-          className="border border-white/10 w-32 transition duration-300 ease-out overflow-hidden rounded-3xl lg:w-96 aspect-square"
-        >
-          <Image
-            src="/images/sahil-verma.png"
-            alt="Sahil Verma"
-            height={2190}
-            width={2190}
-            sizes="30vw"
-            priority
-            className="object-cover object-top h-full w-full"
-          />
-        </motion.div>
+        <MyPhoto />
         <div className="absolute block w-44 h-44 rounded-full md:hidden top-0 left-0 right-1/2 -z-10 bg-violet-500/40 blur-[5rem]"></div>
       </AnimationContainer>
     </div>
