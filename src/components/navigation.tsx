@@ -37,7 +37,7 @@ const Navigation = () => {
     <header
       className={cn(
         "z-[99999] fixed w-full top-0 left-0 transition-all",
-        bigNav ? " bg-opacity-15 backdrop-blur" : "md:py-6 bg-transparent "
+        bigNav ? "bg-black/50 backdrop-blur" : "md:py-6 bg-transparent "
       )}
     >
       <div
@@ -101,7 +101,7 @@ const Navigation = () => {
                           type: "spring",
                           bounce: 0.3,
                         }}
-                        className="absolute inset-0 border-t rounded-full shadow-md backdrop-blur-lg border-neutral-800 bg-primary shadow-black/50 from-neutral-900/80 to-neutral-900 -z-10"
+                        className="absolute inset-0 rounded-full border-neutral-800 bg-primary  -z-10"
                       />
                     )}
                   </Link>

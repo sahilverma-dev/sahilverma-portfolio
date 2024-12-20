@@ -1,0 +1,1579 @@
+---
+  title: Introduction to Testing in React JS with Typescript
+  summary: MDX is a powerful tool that allows you to write JSX in your Markdown files. This post will introduce you to the basics of MDX.
+  image: https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg
+  author: 'Sahil Verma'
+  publishedAt: '2024-12-08'
+---
+
+Testing is an essential part of software development that ensures your code works as expected and helps prevent future bugs. React, combined with TypeScript, makes testing powerful by enforcing type safety and improving readability. We'll use **Jest** and **React Testing Library (RTL)**, popular choices for testing React applications due to their ease of setup, rich features, and active community support.
+
+---
+
+### **Table of Contents**
+
+1. [**Introduction to Testing in React with TypeScript**](#introduction-to-testing-in-react-with-typescript)
+
+   - Overview of Testing
+   - Importance of Testing in TypeScript Projects
+
+2. [**Setup**](#setup)
+
+   - Project Setup with Jest and React Testing Library
+   - Running Tests in Jest
+
+3. [**Jest vs. React Testing Library**](#jest-vs-react-testing-library)
+
+   - Key Differences and Use Cases
+
+4. [**Types of Tests**](#types-of-tests)
+
+   - Unit Tests
+   - Integration Tests
+   - End-to-End (E2E) Tests
+
+5. [**What is a Test?**](#what-is-a-test)
+
+   - Understanding the Purpose of Tests
+
+6. [**Project Setup**](#project-setup)
+
+   - Configuring Jest and React Testing Library in TypeScript
+   - Setting up `setupTests.ts` for Jest
+
+7. [**Running Tests**](#running-tests)
+
+   - Running Tests in Watch Mode
+   - Filtering and Grouping Tests
+
+8. [**Anatomy of a Test**](#anatomy-of-a-test)
+
+   - Test Structure
+   - Writing Basic Test Assertions
+
+9. [**Your First Test**](#your-first-test)
+
+   - Writing a Simple Test in Jest and React Testing Library
+
+10. [**Test-Driven Development (TDD)**](#test-driven-development-tdd)
+
+    - TDD Workflow and Benefits
+
+11. [**Jest Watch Mode**](#jest-watch-mode)
+
+    - Using Watch Mode for Efficient Testing
+
+12. [**Filtering and Grouping Tests**](#filtering-and-grouping-tests)
+
+    - Organizing Tests with `describe` and `it`
+
+13. [**Filename Conventions**](#filename-conventions)
+
+    - Naming Test Files for Consistency
+
+14. [**Code Coverage**](#code-coverage)
+
+    - Generating Coverage Reports in Jest
+
+15. [**Assertions**](#assertions)
+
+    - Common Assertions in Jest
+    - Matching Expected Values
+
+16. [**What to Test?**](#what-to-test)
+
+    - Guidelines for Deciding What to Test
+
+17. [**React Testing Library (RTL) Queries**](#react-testing-library-rtl-queries)
+
+    - Overview of RTL Query Functions
+
+18. [**Query Types and Usage**](#query-types-and-usage)
+
+    - `getByRole`
+    - `getByLabelText`
+    - `getByPlaceholderText`
+    - `getByText`
+    - `getByDisplayValue`
+    - `getByAltText`
+    - `getByTitle`
+    - `getByTestId`
+
+19. [**Priority Order for Queries**](#priority-order-for-queries)
+
+    - Best Practices for Selecting Queries
+
+20. [**Querying Multiple Elements**](#querying-multiple-elements)
+
+    - Handling Multiple Matching Elements in Queries
+
+21. [**TextMatch Options**](#textmatch-options)
+
+    - Using TextMatch for Flexible Text Queries
+
+22. [**`queryBy` and `findBy`**](#queryby-and-findby)
+
+    - Using `queryBy` for Optional Elements
+    - Using `findBy` for Asynchronous Elements
+
+23. [**Manual Queries**](#manual-queries)
+
+    - Custom Query Strategies in React Testing Library
+
+24. [**Debugging**](#debugging)
+
+    - Tips for Debugging Tests with RTL and Jest
+
+25. [**Testing Playground**](#testing-playground)
+
+    - Using RTL’s Testing Playground for Query Suggestions
+
+26. [**User Interactions**](#user-interactions)
+
+    - Testing User Events with `userEvent`
+
+27. [**Pointer and Keyboard Interactions**](#pointer-and-keyboard-interactions)
+
+    - Simulating Clicks, Hovers, and Key Presses
+
+28. [**Providers**](#providers)
+
+    - Testing Components with Context Providers
+
+29. [**Custom Render Functions**](#custom-render-functions)
+
+    - Creating Custom Render Functions for Tests
+
+30. [**Testing Custom React Hooks**](#testing-custom-react-hooks)
+
+    - Isolating Custom Hook Logic in Tests
+
+31. [**Act Utility**](#act-utility)
+
+    - Using `act` to Handle State Changes in Tests
+
+32. [**Mocking Functions**](#mocking-functions)
+
+    - Mocking Functions with Jest
+
+33. [**Mocking HTTP Requests**](#mocking-http-requests)
+
+    - Overview of Mocking HTTP Calls in Tests
+
+34. [**MSW Setup**](#msw-setup)
+
+    - Setting up Mock Service Worker (MSW) for API Mocks
+
+35. [**MSW Handlers**](#msw-handlers)
+
+    - Defining Request Handlers with MSW
+
+36. [**Testing with MSW**](#testing-with-msw)
+
+    - Using MSW for Component and API Tests
+
+37. [**MSW Error Handling**](#msw-error-handling)
+
+    - Handling API Errors and Network Issues with MSW
+
+38. [**Static Analysis Testing**](#static-analysis-testing)
+
+    - Overview of Static Analysis Tools
+
+39. [**ESLint**](#eslint)
+
+    - Setting up ESLint for Code Quality
+
+40. [**Prettier**](#prettier)
+
+    - Using Prettier for Code Formatting
+
+41. [**Husky**](#husky)
+
+    - Enforcing Pre-Commit Hooks with Husky
+
+42. [**lint-staged**](#lint-staged)
+    - Optimizing Pre-Commit Hooks with lint-staged
+
+---
+
+### **Setup for Testing in React and TypeScript**
+
+#### 1. **Installing Dependencies**
+
+To get started with testing in React and TypeScript, install the necessary packages:
+
+```bash
+npm install --save-dev jest @testing-library/react @testing-library/jest-dom @types/jest
+```
+
+- **Jest** is the main testing framework.
+- **@testing-library/react** is a library for testing React components.
+- **@testing-library/jest-dom** provides custom matchers for asserting on DOM nodes.
+- **@types/jest** is for TypeScript support in Jest.
+
+#### 2. **Configuring Jest**
+
+Create a `jest.config.ts` file to customize Jest’s behavior:
+
+```typescript
+export default {
+  preset: "ts-jest",
+  testEnvironment: "jsdom",
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
+};
+```
+
+- `preset: 'ts-jest'`: Enables TypeScript support in Jest.
+- `testEnvironment: 'jsdom'`: Sets up a browser-like environment.
+- `setupFilesAfterEnv`: Points to the setup file.
+
+#### 3. **Setting Up Jest-DOM**
+
+In your `jest.setup.ts` file, import the jest-dom matchers:
+
+```typescript
+import "@testing-library/jest-dom";
+```
+
+This lets you use helpful matchers like `.toBeInTheDocument()` in your tests.
+
+---
+
+### **Jest vs. React Testing Library**
+
+**Jest** is a JavaScript testing framework, while **React Testing Library (RTL)** is a utility specifically for testing React components. Use Jest to:
+
+- Run test suites
+- Mock functions
+- Assert test conditions
+
+React Testing Library focuses on testing from the user's perspective, prioritizing **accessibility-based queries** (like `getByRole`) and reducing coupling to internal component details.
+
+---
+
+### **Types of Tests**
+
+In software testing, different types of tests help ensure quality at various levels. Here’s a breakdown:
+
+1. **Unit Tests**
+   - **Purpose**: Test individual functions or components in isolation.
+   - **Example**: Testing if a component renders correctly with specific props.
+2. **Integration Tests**
+   - **Purpose**: Check the interaction between multiple units or components.
+   - **Example**: Testing if a parent component renders a child component with correct props.
+3. **End-to-End (E2E) Tests**
+   - **Purpose**: Simulate real user behavior across the application.
+   - **Example**: Using a tool like Cypress to verify the complete user journey on a login form.
+4. **Static Analysis**
+   - **Purpose**: Ensure code quality and enforce best practices without running the code.
+   - **Example**: Using ESLint to catch syntax errors or Prettier for consistent formatting.
+
+---
+
+### **What is a Test?**
+
+A test in Jest and React Testing Library is a **function that asserts that a particular behavior or output is correct**. Tests contain three main parts:
+
+1. **Arrange** - Set up the environment or component.
+2. **Act** - Interact with the component (e.g., clicking a button).
+3. **Assert** - Check if the result matches expectations.
+
+Example:
+
+```typescript
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import MyComponent from "./MyComponent";
+
+test("it displays the correct message after button click", () => {
+  render(<MyComponent />); // Arrange
+
+  const button = screen.getByRole("button", { name: /click me/i });
+  userEvent.click(button); // Act
+
+  expect(screen.getByText(/message displayed/i)).toBeInTheDocument(); // Assert
+});
+```
+
+---
+
+### **Project Setup**
+
+1. **Folder Structure**
+
+   - A common setup is to place each component’s tests alongside the component file in the `src` directory.
+   - Example:
+     ```
+     src/
+     ├── components/
+     │   ├── MyComponent.tsx
+     │   └── MyComponent.test.tsx
+     ├── utils/
+     │   ├── myHelper.ts
+     │   └── myHelper.test.ts
+     ```
+
+2. **Configuring TypeScript for Jest**  
+   Ensure `tsconfig.json` includes `"jsx": "react"` if you’re using React and `"types": ["jest"]` for Jest’s type definitions.
+
+---
+
+### **Running Tests**
+
+To run tests with Jest:
+
+```bash
+npx jest
+```
+
+Or, if Jest is configured in your `package.json`:
+
+```bash
+npm test
+```
+
+Jest will automatically find and execute all files ending in `.test.ts`, `.test.tsx`, `.spec.ts`, or `.spec.tsx`.
+
+---
+
+### **Anatomy of a Test**
+
+Tests in Jest generally follow a structure:
+
+```typescript
+describe("MyComponent", () => {
+  it("should render without crashing", () => {
+    render(<MyComponent />);
+    expect(screen.getByText("Hello")).toBeInTheDocument();
+  });
+});
+```
+
+- `describe`: Groups related tests, making test suites easier to read.
+- `it` or `test`: Defines a single test case.
+
+---
+
+### **Your First Test**
+
+Let’s write a simple test to get started:
+
+```typescript
+import { render, screen } from "@testing-library/react";
+import MyComponent from "./MyComponent";
+
+test("renders the component with initial content", () => {
+  render(<MyComponent />);
+  expect(screen.getByText(/welcome to my component/i)).toBeInTheDocument();
+});
+```
+
+Here, we render `MyComponent` and check if it displays the expected initial text.
+
+---
+
+### **Test Driven Development (TDD)**
+
+In TDD, you write tests before writing the actual code. This process includes three steps:
+
+1. **Write a Failing Test** - Write a test for the feature or function before it exists.
+2. **Write the Minimum Code** - Add just enough code to make the test pass.
+3. **Refactor** - Improve the code quality without changing functionality.
+
+Example of TDD in action:
+
+1. **Write the Test**:
+
+   ```typescript
+   test("it greets the user by name", () => {
+     const name = "Alice";
+     render(<Greeting name={name} />);
+     expect(screen.getByText(`Hello, ${name}`)).toBeInTheDocument();
+   });
+   ```
+
+2. **Write the Code**:
+
+   ```typescript
+   function Greeting({ name }: { name: string }) {
+     return <p>Hello, {name}</p>;
+   }
+   ```
+
+3. **Refactor**:
+   Clean up or refactor `Greeting` to improve readability or performance if needed.
+
+---
+
+### **Jest Watch Mode**
+
+Jest’s watch mode automatically re-runs tests when files change, making it ideal for Test-Driven Development. You can enable it by running:
+
+```bash
+npm test -- --watch
+```
+
+Useful watch mode commands:
+
+- Press `p` to filter by a specific filename.
+- Press `t` to filter by test name.
+- Press `q` to quit watch mode.
+
+---
+
+### **Filtering Tests**
+
+When debugging or working on specific areas, you may want to run only a subset of tests.
+
+1. **Running a Specific Test File**
+
+   ```bash
+   npx jest src/components/MyComponent.test.tsx
+   ```
+
+2. **Using `.only` and `.skip`**
+
+   - `.only`: Run a single test or describe block.
+   - `.skip`: Skip tests temporarily.
+
+   ```typescript
+   test.only("runs only this test", () => {
+     expect(true).toBe(true);
+   });
+
+   test.skip("skips this test", () => {
+     expect(false).toBe(true);
+   });
+   ```
+
+3. **Filtering by Pattern**  
+   Jest allows you to filter tests by specifying patterns with `-t`:
+
+   ```bash
+   npx jest -t 'MyComponent'
+   ```
+
+---
+
+### **Grouping Tests**
+
+Grouping related tests improves readability and maintains an organized test suite.
+
+1. **Using `describe` Blocks**  
+   Group tests by functionality or component with `describe`:
+
+   ```typescript
+   describe("MyComponent", () => {
+     test("renders with default props", () => {
+       render(<MyComponent />);
+       expect(screen.getByText(/default content/i)).toBeInTheDocument();
+     });
+
+     test("renders with a different prop", () => {
+       render(<MyComponent text="Hello" />);
+       expect(screen.getByText(/hello/i)).toBeInTheDocument();
+     });
+   });
+   ```
+
+2. **Nested `describe` Blocks**  
+   You can nest `describe` blocks for more granular organization, like grouping tests by feature within a component.
+
+   ```typescript
+   describe("MyComponent", () => {
+     describe("when default props are used", () => {
+       test("renders default text", () => {
+         render(<MyComponent />);
+         expect(screen.getByText(/default content/i)).toBeInTheDocument();
+       });
+     });
+
+     describe("when custom props are passed", () => {
+       test("renders custom text", () => {
+         render(<MyComponent text="Custom" />);
+         expect(screen.getByText(/custom/i)).toBeInTheDocument();
+       });
+     });
+   });
+   ```
+
+---
+
+### **Filename Conventions**
+
+By following naming conventions, you can ensure Jest correctly identifies test files:
+
+- Use `.test.ts` or `.test.tsx` suffixes for TypeScript tests.
+- Example naming conventions:
+  - `MyComponent.test.tsx` for a React component
+  - `helpers.test.ts` for a utility file
+
+This makes it easy to locate test files and maintain a standardized structure across the codebase.
+
+---
+
+### **Code Coverage**
+
+Code coverage helps determine which parts of your code are covered by tests. Jest includes built-in support for coverage reports.
+
+1. **Generate a Coverage Report**
+   Run Jest with the `--coverage` flag to generate a coverage report:
+
+   ```bash
+   npx jest --coverage
+   ```
+
+   This creates a `coverage/` directory with HTML reports that provide a breakdown of code coverage by file.
+
+2. **Coverage Thresholds**
+   You can set coverage thresholds in your `jest.config.ts` to enforce minimum coverage requirements:
+
+   ```typescript
+   export default {
+     // other Jest config
+     coverageThreshold: {
+       global: {
+         branches: 80,
+         functions: 80,
+         lines: 80,
+         statements: 80,
+       },
+     },
+   };
+   ```
+
+   This will make Jest fail if the coverage drops below these percentages.
+
+---
+
+### **Assertions**
+
+Assertions are checks that validate if test outcomes match expected results. In Jest, you have access to various assertion methods like `toBe`, `toEqual`, and `toContain`.
+
+Examples:
+
+1. **Basic Assertions**
+
+   ```typescript
+   expect(2 + 2).toBe(4);
+   expect(user.name).toEqual("Alice");
+   ```
+
+2. **DOM Assertions (jest-dom)**
+
+   ```typescript
+   render(<MyComponent />);
+   expect(screen.getByText(/hello world/i)).toBeInTheDocument();
+   expect(screen.getByRole("button")).toHaveTextContent(/submit/i);
+   ```
+
+3. **Custom Assertions**
+   You can also add custom matchers for specific needs or complex assertions.
+
+   ```typescript
+   expect.extend({
+     toBeEven(received) {
+       const pass = received % 2 === 0;
+       return {
+         message: () => `expected ${received} to be even`,
+         pass,
+       };
+     },
+   });
+
+   expect(4).toBeEven();
+   ```
+
+---
+
+### **What to Test?**
+
+When testing a React application, aim to write tests that provide real value and ensure the code behaves as expected. Here are some key areas to focus on:
+
+1. **Component Rendering**
+
+   - Check if components render with the correct content, based on the props passed.
+   - Example: Verifying that a `Header` component displays the correct title.
+
+2. **User Interactions**
+
+   - Test how components respond to user actions like clicks, typing, and form submissions.
+   - Example: Checking if a button click updates the UI or triggers a function.
+
+3. **Edge Cases**
+
+   - Consider testing unexpected or unusual input values and conditions.
+   - Example: Ensuring that a form behaves correctly with no data or invalid input.
+
+4. **Conditional Rendering**
+
+   - Test components with different states to verify that conditional UI elements render correctly.
+   - Example: Checking if a loading spinner displays while data is being fetched.
+
+5. **API Calls and Data Fetching**
+   - Mock API calls to check if the component fetches data and updates accordingly.
+   - Example: Verifying that a list component displays items after a successful API call.
+
+---
+
+### **React Testing Library (RTL) Queries**
+
+RTL provides several query methods to access elements in the DOM. These queries are designed to mimic how a user would locate elements, making tests more reliable and maintainable. Here’s an overview of RTL’s main queries:
+
+1. **getBy**
+
+   - Throws an error if the element is not found.
+   - Example: `getByText`, `getByRole`.
+
+2. **queryBy**
+
+   - Returns `null` if the element is not found, instead of throwing an error.
+   - Use for cases where the element may or may not be present.
+
+3. **findBy**
+   - Asynchronous variant of `getBy`. Use when elements appear after a delay, like after an API call.
+
+---
+
+### **getByRole**
+
+`getByRole` is one of the most powerful queries, as it helps locate elements based on their role (e.g., `button`, `textbox`, `heading`). This method promotes accessible testing by encouraging the use of semantic roles.
+
+```typescript
+import { render, screen } from "@testing-library/react";
+import MyButton from "./MyButton";
+
+test("renders a button with accessible role", () => {
+  render(<MyButton />);
+  const button = screen.getByRole("button", { name: /click me/i });
+  expect(button).toBeInTheDocument();
+});
+```
+
+---
+
+### **getByRole Options**
+
+The `getByRole` query has additional options to refine the search:
+
+- `name`: A string or RegExp that matches the element’s accessible name.
+- `level`: Used specifically for heading elements (e.g., `level: 1` for `<h1>`).
+- `hidden`: A boolean to include elements hidden from the screen reader.
+
+Example with `name` and `level`:
+
+```typescript
+render(<h1>Home Page</h1>);
+const heading = screen.getByRole("heading", { name: /home page/i, level: 1 });
+expect(heading).toBeInTheDocument();
+```
+
+---
+
+### **getByLabelText**
+
+`getByLabelText` is used to find form controls by their associated labels, which is crucial for accessibility.
+
+Example:
+
+```typescript
+import { render, screen } from '@testing-library/react';
+
+render(
+  <label htmlFor="username">Username</label>
+  <input id="username" />
+);
+
+const input = screen.getByLabelText(/username/i);
+expect(input).toBeInTheDocument();
+```
+
+This method is beneficial for testing forms, ensuring that each form control is accessible via a label.
+
+---
+
+### **getByPlaceholderText**
+
+`getByPlaceholderText` finds elements with a specific `placeholder` attribute, often used for inputs.
+
+```typescript
+render(<input placeholder="Enter your name" />);
+const input = screen.getByPlaceholderText(/enter your name/i);
+expect(input).toBeInTheDocument();
+```
+
+---
+
+### **getByText**
+
+`getByText` is commonly used to locate elements by their text content. It’s useful for testing static text, such as headings, paragraphs, or button labels.
+
+```typescript
+render(<button>Submit</button>);
+const button = screen.getByText(/submit/i);
+expect(button).toBeInTheDocument();
+```
+
+---
+
+### **getByDisplayValue**
+
+`getByDisplayValue` locates form elements by their current value, which is useful for testing controlled components.
+
+```typescript
+render(<input value="Test Value" />);
+const input = screen.getByDisplayValue(/test value/i);
+expect(input).toBeInTheDocument();
+```
+
+---
+
+### **getByAltText**
+
+`getByAltText` is used to locate images or elements with an `alt` attribute, which is essential for accessible images.
+
+Example:
+
+```typescript
+import { render, screen } from "@testing-library/react";
+
+render(<img src="logo.png" alt="Company Logo" />);
+const image = screen.getByAltText(/company logo/i);
+expect(image).toBeInTheDocument();
+```
+
+This query is particularly helpful when testing components that include images, ensuring they provide appropriate `alt` text.
+
+---
+
+### **getByTitle**
+
+`getByTitle` locates elements using the `title` attribute. This attribute is often used to provide additional context or tooltips for assistive technologies.
+
+Example:
+
+```typescript
+render(<span title="Tooltip content">Hover over me</span>);
+const tooltipElement = screen.getByTitle(/tooltip content/i);
+expect(tooltipElement).toBeInTheDocument();
+```
+
+Use `getByTitle` when `title` attributes are intentionally used for providing supplementary information.
+
+---
+
+### **getByTestId**
+
+`getByTestId` allows you to target elements by a `data-testid` attribute. While this is sometimes necessary, it's generally recommended as a last resort when other queries (like `getByRole` or `getByText`) are impractical.
+
+Example:
+
+```typescript
+render(<div data-testid="custom-element">Hello</div>);
+const customElement = screen.getByTestId("custom-element");
+expect(customElement).toBeInTheDocument();
+```
+
+### **Priority Order for Queries**
+
+React Testing Library recommends using queries based on accessibility, encouraging more resilient tests. The priority order is:
+
+1. **Role-Based Queries** (`getByRole`)
+2. **Label-Based Queries** (`getByLabelText`)
+3. **Text-Based Queries** (`getByText`)
+4. **Alt Text Queries** (`getByAltText`)
+5. **Display Value Queries** (`getByDisplayValue`)
+6. **Title-Based Queries** (`getByTitle`)
+7. **Test ID Queries** (`getByTestId`)
+
+Using this hierarchy promotes accessibility by focusing on how users will interact with elements rather than internal implementation details.
+
+---
+
+### **Query Multiple Elements**
+
+Sometimes you may have multiple elements that match a query. For example, `getAllByText` retrieves all elements matching the specified text, returning an array of elements.
+
+Example:
+
+```tsx
+render(
+  <>
+    <button>Submit</button>
+    <button>Submit</button>
+  </>
+);
+const buttons = screen.getAllByText(/submit/i);
+expect(buttons).toHaveLength(2);
+```
+
+Other multiple-element queries include `getAllByRole`, `getAllByLabelText`, and so on.
+
+---
+
+### **TextMatch**
+
+When querying by text (e.g., `getByText`), you can specify how to match the text using a `TextMatch` option. This can be a string, regex, or a custom function.
+
+1. **String Match**:
+
+   ```typescript
+   screen.getByText("Submit");
+   ```
+
+2. **Regex Match**:
+
+   ```typescript
+   screen.getByText(/submit/i); // case-insensitive
+   ```
+
+3. **Custom Function Match**:
+   ```typescript
+   screen.getByText(
+     (content, element) =>
+       element.tagName === "BUTTON" && content.startsWith("Sub")
+   );
+   ```
+
+Using `TextMatch` makes tests more adaptable to minor text variations while keeping them readable.
+
+---
+
+### **queryBy**
+
+`queryBy` works similarly to `getBy` but returns `null` if an element isn’t found instead of throwing an error. This is useful for elements that may or may not be present, such as conditional rendering.
+
+Example:
+
+```typescript
+const modal = screen.queryByText(/welcome modal/i);
+expect(modal).toBeNull(); // Ensures the modal is not in the DOM
+```
+
+Use `queryBy` for optional elements, where their absence should not cause a test failure.
+
+---
+
+### **findBy**
+
+`findBy` is an asynchronous version of `getBy`, useful for waiting for elements that appear after a delay, such as loading data from an API.
+
+Example:
+
+```typescript
+const asyncElement = await screen.findByText(/loaded content/i);
+expect(asyncElement).toBeInTheDocument();
+```
+
+`findBy` can be combined with `waitFor` to handle dynamic changes in the DOM.
+
+---
+
+### **Manual Queries**
+
+Sometimes, RTL’s built-in queries aren’t sufficient, and you may need to manually search for elements. RTL provides access to the `container` (the root DOM node) for custom queries.
+
+Example:
+
+```tsx
+const { container } = render(<MyComponent />);
+const customElement = container.querySelector(".my-class");
+expect(customElement).toBeInTheDocument();
+```
+
+While manual queries offer flexibility, it’s recommended to use them sparingly, as they don’t prioritize accessibility or readability.
+
+---
+
+### **Debugging**
+
+React Testing Library provides helpful tools for debugging tests when they fail.
+
+1. **`screen.debug()`**  
+   Print the current DOM to the console for inspection. This is useful to see the component’s structure and identify issues.
+
+   ```tsx
+   render(<MyComponent />);
+   screen.debug();
+   ```
+
+2. **`prettyDOM()`**  
+   `prettyDOM()` returns a formatted string of the DOM node, making it easier to debug specific elements. You can use this with `screen` or any DOM node.
+
+   ```typescript
+   const { container } = render(<MyComponent />);
+   console.log(prettyDOM(container));
+   ```
+
+3. **`logTestingPlaygroundURL()`**  
+   This method outputs a Testing Playground URL to help visually inspect and debug tests. You can open the link in a browser to explore the component's DOM interactively.
+
+   ```typescript
+   import { logTestingPlaygroundURL } from "@testing-library/react";
+
+   render(<MyComponent />);
+   logTestingPlaygroundURL();
+   ```
+
+---
+
+### **Testing Playground**
+
+Testing Playground is a tool for exploring and inspecting your DOM to understand how to query elements. You can:
+
+Link: https://chromewebstore.google.com/detail/testing-playground/hejbmebodbijjdhflfknehhcgaklhano?hl=en
+
+---
+
+### **User Interactions**
+
+React Testing Library provides the `userEvent` API for simulating user interactions, offering more realistic behavior than the basic `fireEvent`. Some common interactions include clicks, typing, and selecting text.
+
+#### Example Setup
+
+```tsx
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import MyComponent from "./MyComponent";
+```
+
+1. **Clicking Elements**
+
+   ```tsx
+   render(<button onClick={() => console.log("Clicked!")}>Click me</button>);
+   const button = screen.getByText(/click me/i);
+   userEvent.click(button);
+   ```
+
+2. **Typing Text**
+
+   Simulate typing into an input. `userEvent.type` also supports typing delays for testing real-world typing scenarios.
+
+   ```tsx
+   render(<input placeholder="Enter text" />);
+   const input = screen.getByPlaceholderText(/enter text/i);
+   userEvent.type(input, "Hello");
+   expect(input).toHaveValue("Hello");
+   ```
+
+3. **Selecting Text**
+
+   You can simulate selecting text in an input field.
+
+   ```tsx
+   render(<input defaultValue="Hello World" />);
+   const input = screen.getByDisplayValue("Hello World");
+   userEvent.selectOptions(input, ["Hello"]);
+   ```
+
+---
+
+### **Pointer Interactions**
+
+Simulate pointer interactions such as clicks, double-clicks, or hover actions using `userEvent`.
+
+1. **Double Click**
+
+   ```tsx
+   render(
+     <button onDoubleClick={() => console.log("Double-clicked!")}>
+       Click me
+     </button>
+   );
+   const button = screen.getByText(/click me/i);
+   userEvent.dblClick(button);
+   ```
+
+2. **Hover**
+
+   ```tsx
+   render(<div onMouseOver={() => console.log("Hovered!")}>Hover over me</div>);
+   const div = screen.getByText(/hover over me/i);
+   userEvent.hover(div);
+   ```
+
+---
+
+### **Keyboard Interactions**
+
+Keyboard interactions, such as pressing Enter or Tab, can be simulated to test form navigation and keyboard accessibility.
+
+1. **Pressing Enter**
+
+   ```tsx
+   render(
+     <input
+       onKeyPress={(e) => e.key === "Enter" && console.log("Enter pressed")}
+     />
+   );
+   const input = screen.getByRole("textbox");
+   userEvent.type(input, "{enter}");
+   ```
+
+2. **Tabbing Between Elements**
+
+   ```tsx
+   render(
+     <>
+       <input placeholder="First" />
+       <input placeholder="Second" />
+     </>
+   );
+   const firstInput = screen.getByPlaceholderText(/first/i);
+   const secondInput = screen.getByPlaceholderText(/second/i);
+
+   userEvent.tab();
+   expect(firstInput).toHaveFocus();
+
+   userEvent.tab();
+   expect(secondInput).toHaveFocus();
+   ```
+
+---
+
+### **Providers**
+
+If your component relies on React Context providers (like Redux or Theme providers), wrap your component with the necessary providers when testing.
+
+Example with a ThemeProvider:
+
+```tsx
+import { ThemeProvider } from "styled-components";
+import { render, screen } from "@testing-library/react";
+import MyComponent from "./MyComponent";
+import theme from "./theme";
+
+render(
+  <ThemeProvider theme={theme}>
+    <MyComponent />
+  </ThemeProvider>
+);
+```
+
+Providing context dependencies directly in the test ensures your component behaves as it would in a real environment.
+
+---
+
+### **Custom Render Functions**
+
+In tests with multiple providers or repetitive setup code, you can create a custom `render` function to simplify test cases. This approach keeps tests clean and reduces duplication.
+
+#### Example: Custom Render with ThemeProvider and Redux
+
+1. Create a `customRender` function that wraps your component with necessary providers.
+
+   ```tsx
+   import { render } from "@testing-library/react";
+   import { Provider } from "react-redux";
+   import { ThemeProvider } from "styled-components";
+   import { store } from "./store";
+   import theme from "./theme";
+
+   const customRender = (ui, options) =>
+     render(
+       <Provider store={store}>
+         <ThemeProvider theme={theme}>{ui}</ThemeProvider>
+       </Provider>,
+       options
+     );
+
+   export * from "@testing-library/react";
+   export { customRender as render };
+   ```
+
+2. Use `customRender` in tests instead of the standard `render`.
+
+   ```tsx
+   import { render, screen } from "./test-utils"; // Adjust path as needed
+   import MyComponent from "./MyComponent";
+
+   test("renders with providers", () => {
+     render(<MyComponent />);
+     const element = screen.getByText(/example text/i);
+     expect(element).toBeInTheDocument();
+   });
+   ```
+
+Custom `render` functions are useful for components requiring multiple contexts or configurations, keeping test code maintainable.
+
+---
+
+### **Custom React Hooks**
+
+To test custom React hooks, create wrapper components that allow you to test hook functionality in isolation. This approach ensures the hook’s behavior is tested directly, without needing to embed it within other components.
+
+#### Example: Testing a Custom Hook
+
+Suppose you have a hook called `useCounter`:
+
+```tsx
+import { useState } from "react";
+
+function useCounter() {
+  const [count, setCount] = useState(0);
+  const increment = () => setCount((c) => c + 1);
+  return { count, increment };
+}
+
+export default useCounter;
+```
+
+1. Write a test using a wrapper component.
+
+   ```tsx
+   import { renderHook, act } from "@testing-library/react-hooks";
+   import useCounter from "./useCounter";
+
+   test("should increment counter", () => {
+     const { result } = renderHook(() => useCounter());
+
+     act(() => {
+       result.current.increment();
+     });
+
+     expect(result.current.count).toBe(1);
+   });
+   ```
+
+In this example, `renderHook` creates a testing environment for the hook, and `act` helps simulate state updates, making it straightforward to test hooks independently.
+
+---
+
+### **Act Utility**
+
+The `act` utility is essential for testing React components or hooks that cause state changes. It ensures that updates happen synchronously, helping tests stay accurate and preventing warnings about unwrapped updates.
+
+1. **Using `act` for State Updates**
+
+   ```tsx
+   import { render, screen, fireEvent, act } from "@testing-library/react";
+   import MyButton from "./MyButton";
+
+   test("button click updates text", () => {
+     render(<MyButton />);
+
+     const button = screen.getByRole("button", { name: /click me/i });
+
+     act(() => {
+       fireEvent.click(button);
+     });
+
+     expect(screen.getByText(/clicked/i)).toBeInTheDocument();
+   });
+   ```
+
+2. **Using `act` in Asynchronous Tests**
+
+   ```tsx
+   import { render, screen, waitFor } from "@testing-library/react";
+   import AsyncComponent from "./AsyncComponent";
+
+   test("displays content after loading", async () => {
+     render(<AsyncComponent />);
+
+     await act(async () => {
+       await waitFor(() => screen.getByText(/loaded content/i));
+     });
+
+     expect(screen.getByText(/loaded content/i)).toBeInTheDocument();
+   });
+   ```
+
+The `act` utility is a best practice for testing any component or hook with asynchronous updates or side effects, ensuring tests accurately reflect component behavior.
+
+---
+
+### **Mocking Functions**
+
+Mocking functions is often necessary to isolate unit tests and control function behavior, especially for dependencies like API calls or other side effects.
+
+1. **Basic Function Mocking with Jest**
+
+   ```tsx
+   const mockFunction = jest.fn();
+
+   mockFunction.mockReturnValue("Mocked Value");
+   expect(mockFunction()).toBe("Mocked Value");
+   ```
+
+2. **Mocking Component Props**
+
+   ```tsx
+   import MyComponent from "./MyComponent";
+
+   const mockHandler = jest.fn();
+   render(<MyComponent onClick={mockHandler} />);
+
+   userEvent.click(screen.getByRole("button"));
+   expect(mockHandler).toHaveBeenCalledTimes(1);
+   ```
+
+3. **Mocking Imported Functions**
+
+   ```tsx
+   import * as api from "./api";
+
+   jest.spyOn(api, "fetchData").mockResolvedValue("Mocked Data");
+   ```
+
+Mocking functions allows you to control test conditions precisely, making it easier to verify specific component logic.
+
+---
+
+### **Mocking HTTP Requests**
+
+Mocking HTTP requests in tests isolates your component from real network calls, making tests faster and more predictable. A popular approach is to use **Mock Service Worker (MSW)** to intercept and mock requests.
+
+#### Example without MSW (Basic Jest Mocking)
+
+1. Mock an API module directly:
+
+   ```tsx
+   import * as api from "./api";
+   import { render, screen, waitFor } from "@testing-library/react";
+   import MyComponent from "./MyComponent";
+
+   jest.spyOn(api, "fetchData").mockResolvedValue({ data: "Mocked Data" });
+
+   test("displays data from API", async () => {
+     render(<MyComponent />);
+
+     await waitFor(() => {
+       expect(screen.getByText(/mocked data/i)).toBeInTheDocument();
+     });
+   });
+   ```
+
+This approach is suitable for simple cases but doesn’t allow as much flexibility as MSW, especially for complex request handling.
+
+---
+
+### **MSW Setup**
+
+**Mock Service Worker (MSW)** intercepts network requests, providing flexible request handling in tests.
+
+1. **Install MSW**
+
+   ```bash
+   npm install msw --save-dev
+   ```
+
+2. **Setup MSW in Tests**
+
+   Create an `mswSetup.js` file to configure MSW:
+
+   ```typescript
+   // src/setupTests.ts
+   import { setupServer } from "msw/node";
+   import { rest } from "msw";
+
+   const server = setupServer(
+     rest.get("/api/data", (req, res, ctx) => {
+       return res(ctx.json({ data: "Mocked API Data" }));
+     })
+   );
+
+   beforeAll(() => server.listen());
+   afterEach(() => server.resetHandlers());
+   afterAll(() => server.close());
+
+   export { server, rest };
+   ```
+
+3. **Include MSW in Jest Setup**
+
+   In your Jest configuration or `setupTests.ts`, import this file to ensure MSW is available in all tests.
+
+   ```typescript
+   // jest.setup.js
+   import "./setupTests";
+   ```
+
+---
+
+### **MSW Handlers**
+
+MSW handlers define how requests should be intercepted and mocked. Each handler specifies the HTTP method, endpoint, and response.
+
+1. **Basic MSW Handler**
+
+   ```typescript
+   import { rest } from "msw";
+
+   const handlers = [
+     rest.get("/api/data", (req, res, ctx) => {
+       return res(ctx.json({ data: "Mocked Data" }));
+     }),
+   ];
+
+   export { handlers };
+   ```
+
+2. **Mocking Different Status Codes**
+
+   You can mock errors by returning different status codes and error messages.
+
+   ```typescript
+   const errorHandlers = [
+     rest.get("/api/data", (req, res, ctx) => {
+       return res(
+         ctx.status(500),
+         ctx.json({ error: "Internal Server Error" })
+       );
+     }),
+   ];
+   ```
+
+This flexibility allows you to simulate different API responses, making it easy to test how your component handles success, errors, or edge cases.
+
+---
+
+### **Testing with MSW**
+
+Using MSW in your tests makes it straightforward to verify how components react to various API responses.
+
+1. **Using MSW in Component Tests**
+
+   ```typescript
+   import { render, screen, waitFor } from "@testing-library/react";
+   import MyComponent from "./MyComponent";
+   import { server, rest } from "./setupTests";
+
+   test("displays data from mocked API", async () => {
+     render(<MyComponent />);
+
+     await waitFor(() => {
+       expect(screen.getByText(/mocked data/i)).toBeInTheDocument();
+     });
+   });
+
+   test("displays error message on server error", async () => {
+     server.use(
+       rest.get("/api/data", (req, res, ctx) => {
+         return res(ctx.status(500));
+       })
+     );
+
+     render(<MyComponent />);
+     await waitFor(() => {
+       expect(screen.getByText(/error occurred/i)).toBeInTheDocument();
+     });
+   });
+   ```
+
+MSW allows you to swap request handlers easily, providing precise control over test conditions.
+
+---
+
+### **MSW Error Handling**
+
+Testing how components handle errors, like network failures or server issues, is essential for resilient applications.
+
+1. **Mocking Network Errors**
+
+   ```typescript
+   server.use(
+     rest.get("/api/data", (req, res, ctx) => {
+       return res.networkError("Failed to connect");
+     })
+   );
+
+   render(<MyComponent />);
+   await waitFor(() => {
+     expect(screen.getByText(/failed to connect/i)).toBeInTheDocument();
+   });
+   ```
+
+2. **Handling 404 or 500 Errors**
+
+   ```typescript
+   server.use(
+     rest.get("/api/data", (req, res, ctx) => {
+       return res(ctx.status(404), ctx.json({ message: "Not Found" }));
+     })
+   );
+
+   render(<MyComponent />);
+   await waitFor(() => {
+     expect(screen.getByText(/not found/i)).toBeInTheDocument();
+   });
+   ```
+
+MSW’s error-handling options ensure that you can reliably test how your component responds to various error conditions.
+
+---
+
+### **Static Analysis Testing**
+
+Static analysis helps identify potential issues in code without running it, enhancing code quality and enforcing consistent standards. Tools like **ESLint** and **Prettier** are widely used for static analysis in React and TypeScript projects.
+
+---
+
+### **ESLint**
+
+ESLint is a powerful linting tool that checks for potential errors and enforces code style rules. It can catch common issues and ensure best practices, especially useful in TypeScript projects.
+
+1. **Setting Up ESLint**
+
+   Install ESLint and the TypeScript ESLint plugin:
+
+   ```bash
+   npm install eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin --save-dev
+   ```
+
+2. **Configure ESLint**
+
+   Create an `.eslintrc.json` file in your project root and add basic configuration:
+
+   ```json
+   {
+     "parser": "@typescript-eslint/parser",
+     "extends": [
+       "eslint:recommended",
+       "plugin:@typescript-eslint/recommended",
+       "plugin:react/recommended"
+     ],
+     "plugins": ["@typescript-eslint", "react"],
+     "settings": {
+       "react": {
+         "version": "detect"
+       }
+     },
+     "rules": {
+       "@typescript-eslint/no-unused-vars": ["warn"],
+       "react/prop-types": "off"
+     }
+   }
+   ```
+
+3. **Running ESLint**
+
+   Run ESLint to check for code issues:
+
+   ```bash
+   npx eslint . --ext .ts,.tsx
+   ```
+
+Using ESLint helps maintain consistent coding standards across your project, improving readability and preventing common errors.
+
+---
+
+### **Prettier**
+
+Prettier is an automatic code formatter that enforces consistent style, removing the need for manual code formatting.
+
+1. **Installing Prettier**
+
+   ```bash
+   npm install prettier --save-dev
+   ```
+
+2. **Prettier Configuration**
+
+   Create a `.prettierrc` file in your project root to configure Prettier’s settings:
+
+   ```json
+   {
+     "semi": true,
+     "singleQuote": true,
+     "trailingComma": "all",
+     "printWidth": 80
+   }
+   ```
+
+3. **Running Prettier**
+
+   Format code with Prettier:
+
+   ```bash
+   npx prettier --write .
+   ```
+
+4. **Integrate Prettier with ESLint**
+
+   Install ESLint Prettier plugins:
+
+   ```bash
+   npm install eslint-config-prettier eslint-plugin-prettier --save-dev
+   ```
+
+   Update `.eslintrc.json` to include Prettier in ESLint:
+
+   ```json
+   {
+     "extends": [
+       "eslint:recommended",
+       "plugin:@typescript-eslint/recommended",
+       "plugin:react/recommended",
+       "plugin:prettier/recommended"
+     ]
+   }
+   ```
+
+This integration helps catch any issues where ESLint rules conflict with Prettier’s formatting.
+
+---
+
+### **Husky**
+
+Husky enables Git hooks in JavaScript projects, which is helpful for enforcing code standards before code is committed.
+
+1. **Installing Husky**
+
+   ```bash
+   npm install husky --save-dev
+   ```
+
+2. **Setting Up Husky**
+
+   Enable Git hooks in your project:
+
+   ```bash
+   npx husky install
+   ```
+
+3. **Adding a Pre-Commit Hook**
+
+   Create a pre-commit hook to run ESLint and Prettier:
+
+   ```bash
+   npx husky add .husky/pre-commit "npm run lint && npm run format"
+   ```
+
+   Now, every time you commit, Husky will automatically run these commands, ensuring that only clean, formatted code is committed.
+
+---
+
+### **lint-staged**
+
+**lint-staged** works with Husky to run linting and formatting only on staged files, making pre-commit hooks faster.
+
+1. **Installing lint-staged**
+
+   ```bash
+   npm install lint-staged --save-dev
+   ```
+
+2. **Configuring lint-staged**
+
+   Add a `lint-staged` section to your `package.json`:
+
+   ```json
+   {
+     "lint-staged": {
+       "*.ts": ["eslint --fix", "prettier --write"],
+       "*.tsx": ["eslint --fix", "prettier --write"]
+     }
+   }
+   ```
+
+3. **Running lint-staged with Husky**
+
+   Update the pre-commit hook in Husky to use lint-staged:
+
+   ```bash
+   npx husky add .husky/pre-commit "npx lint-staged"
+   ```
+
+By using lint-staged, you ensure that only the files you’re committing are linted and formatted, which improves speed and efficiency.

@@ -3,8 +3,10 @@ import AnimationContainer from "../animated/animated-container";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "../ui/button";
 import BlogCard from "../blog-card";
+import { getBlogs } from "@/lib/blog";
 
-const BlogSection = () => {
+const BlogSection = async () => {
+  const blogs = await getBlogs(6);
   return (
     <AnimationContainer customClassName="w-full py-12 lg:py-16">
       <h2 className="mb-8 text-2xl font-bold tracking-tight text-center text-white lg:text-start">
@@ -16,8 +18,8 @@ const BlogSection = () => {
         sit cum minima, nostrum at asperiores tempore obcaecati veniam!
       </p>
       <div className="space-y-6 md:space-y-12 py-6 lg:py-10 sm:grid-cols-2">
-        {Array.from({ length: 6 }).map((_, index) => (
-          <BlogCard key={index} />
+        {blogs.map((blog) => (
+          <BlogCard key={blog.slug} blog={blog} />
         ))}
       </div>
       <div className="flex justify-center w-full">
