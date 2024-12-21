@@ -5,6 +5,7 @@ import Navigation from "@/components/navigation";
 import AnimatedBackground from "@/components/animated/animated-background";
 import Footer from "@/components/footer";
 import ScrollToTop from "@/components/scroll-to-top";
+import Providers from "@/components/providers";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -29,16 +30,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={` ${poppins.className}  antialiased`}>
-        <AnimatedBackground />
-
-        <Navigation />
-        <main className="w-full min-h-dvh max-w-5xl mx-auto mt-20 md:mt-36 px-4 md:px-8">
-          {children}
-          <ScrollToTop />
-        </main>
-        <Footer />
-      </body>
+      <Providers>
+        <body className={` ${poppins.className}  antialiased`}>
+          <AnimatedBackground />
+          <Navigation />
+          <main className="w-full min-h-dvh max-w-5xl mx-auto mt-20 md:mt-36 px-4 md:px-8">
+            {children}
+            <ScrollToTop />
+          </main>
+          <Footer />
+        </body>
+      </Providers>
     </html>
   );
 }
