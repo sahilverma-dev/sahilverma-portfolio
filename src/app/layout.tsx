@@ -19,6 +19,9 @@ export const metadata: Metadata = {
   },
   description:
     "Hello, I'm Sahil Verma. - I'm a full stack developer from Himachal Pradesh India.",
+  other: {
+    "google-site-verification": "NZ7R4WO9a2HmjUT-KzFOrPpS3C7IpuSagFpCnjMMHHI",
+  },
 };
 
 export default function RootLayout({
