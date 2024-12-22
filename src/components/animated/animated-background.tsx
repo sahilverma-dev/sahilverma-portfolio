@@ -6,6 +6,12 @@ const AnimatedFlair = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
+    const handleOnLoad = () => {
+      setPosition({
+        x: window.innerWidth / 2,
+        y: window.innerHeight / 2,
+      });
+    };
     const handleMouseMove = (event: MouseEvent) => {
       setPosition({
         x: event.clientX,
@@ -16,10 +22,12 @@ const AnimatedFlair = () => {
     // only add lister if not mobile
     if (window.innerWidth >= 768) {
       window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("load", handleOnLoad);
     }
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("load", handleOnLoad);
     };
   }, []);
   return (

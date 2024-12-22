@@ -2,7 +2,6 @@
 import { BsLinkedin as LinkedinIcon } from "react-icons/bs";
 import { FiCodepen as CodepenIcon } from "react-icons/fi";
 import { BsGithub as GithubIcon } from "react-icons/bs";
-
 import {
   BsTwitterX as TwitterXIcon,
   BsDiscord as DiscordIcon,
@@ -56,7 +55,7 @@ export const SOCIAL_LINKS = [
     href: "https://github.com/sahilverma-dev",
   },
   {
-    title: "X",
+    title: "Twitter 𝕏",
     icon: TwitterXIcon,
     href: "https://www.twitter.com/sahilverma_dev/",
   },

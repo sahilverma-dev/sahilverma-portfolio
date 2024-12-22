@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import "./globals.css";
-import Navigation from "@/components/navigation";
+import "@/styles/globals.css";
+
 import AnimatedBackground from "@/components/animated/animated-background";
-import Footer from "@/components/footer";
-import ScrollToTop from "@/components/scroll-to-top";
 import Providers from "@/components/providers";
 
 const poppins = Poppins({
@@ -16,7 +14,7 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   metadataBase: new URL("https://sahilverma.dev"),
   title: {
-    default: "Sahil Verma",
+    default: "Sahil Verma a fullstack developer from India 🇮🇳",
     template: `%s - Sahil Verma`,
   },
   description:
@@ -31,14 +29,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <Providers>
-        <body className={` ${poppins.className}  antialiased`}>
+        <body className={`${poppins.className} antialiased`}>
+          {children}
           <AnimatedBackground />
-          <Navigation />
-          <main className="w-full min-h-dvh max-w-5xl mx-auto mt-24 md:mt-40 px-4 md:px-8">
-            {children}
-            <ScrollToTop />
-          </main>
-          <Footer />
         </body>
       </Providers>
     </html>
