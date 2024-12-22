@@ -20,7 +20,8 @@ export const metadata: Metadata = {
   description:
     "Hello, I'm Sahil Verma. - I'm a full stack developer from Himachal Pradesh India.",
   other: {
-    "google-site-verification": "NZ7R4WO9a2HmjUT-KzFOrPpS3C7IpuSagFpCnjMMHHI",
+    "google-site-verification": process.env
+      .NEXT_PUBLIC_GOOGLE_VERIFICATION_ID as string,
   },
 };
 
