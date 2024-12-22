@@ -34,7 +34,7 @@ export default function RootLayout({
         <body className={` ${poppins.className}  antialiased`}>
           <AnimatedBackground />
           <Navigation />
-          <main className="w-full min-h-dvh max-w-5xl mx-auto mt-20 md:mt-36 px-4 md:px-8">
+          <main className="w-full min-h-dvh max-w-5xl mx-auto mt-24 md:mt-40 px-4 md:px-8">
             {children}
             <ScrollToTop />
           </main>

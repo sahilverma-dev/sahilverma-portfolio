@@ -13,7 +13,8 @@ import AnimationContainer from "./animated/animated-container";
 import Link from "next/link";
 import { ProjectMetadata } from "@/lib/project";
 import { formatDate } from "@/lib/utils";
-import Image from "next/image";
+// import Image from "next/image";
+import AnimatedImage from "./animated/animated-image";
 
 interface Props {
   project: ProjectMetadata;
@@ -62,12 +63,14 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
             </a>
           </div>
           <Link href={`/projects/${project.slug}`}>
-            <Image
+            <AnimatedImage
               src={project.image}
               alt={project.title}
               width={960}
               height={480}
-              className=" w-full aspect-video h-full object-cover object-top "
+              layout
+              layoutId={`project-image-${project.slug}`}
+              // className=" w-full aspect-video h-full object-cover object-top "
             />
           </Link>
           {/* <div className="overlay" /> */}

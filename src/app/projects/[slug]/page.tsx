@@ -5,7 +5,8 @@ import Link from "next/link";
 import { ArrowLeftIcon } from "lucide-react";
 
 import { formatDate } from "@/lib/utils";
-import Image from "next/image";
+// import Image from "next/image";
+import AnimatedImage from "@/components/animated/animated-image";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -68,17 +69,17 @@ const Project = async ({ params }: Props) => {
       </Link>
 
       {image && (
-        <div className="relative mb-6 h-96 w-full overflow-hidden rounded-lg">
-          <Image
-            src={image}
-            alt={title as string}
-            className="h-full w-full rounded-2xl object-cover"
-            width={960}
-            height={480}
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
+        <AnimatedImage
+          className="relative mb-6 h-96 w-full overflow-hidden rounded-lg"
+          src={image}
+          alt={title as string}
+          layout
+          layoutId={`project-image-${slug}`}
+          width={1000}
+          height={680}
+          loading="lazy"
+          decoding="async"
+        />
       )}
 
       <div>
