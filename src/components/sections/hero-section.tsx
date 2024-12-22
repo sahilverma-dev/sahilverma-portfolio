@@ -34,7 +34,10 @@ const Hero = () => {
             Contact Me
           </Link>
           <a
-            href="#"
+            href="resume.pdf"
+            download
+            target="_blank"
+            rel="noopener noreferrer"
             className={cn(
               buttonVariants({ variant: "outline" }),
               "rounded-full"
