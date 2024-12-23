@@ -7,6 +7,7 @@ import { ArrowLeftIcon } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 // import Image from "next/image";
 import AnimatedImage from "@/components/animated/animated-image";
+import AnimatedSignature from "@/components/animated/animated-signature";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -91,6 +92,8 @@ const Blog = async ({ params }: Props) => {
 
       <div className="prose w-full max-w-full my-6 md:mb-10 dark:prose-invert">
         <MDXContent source={content} />
+        Thanks for reading! 😁
+        <AnimatedSignature />
       </div>
     </div>
   );
