@@ -24,6 +24,7 @@
     "next": "15.1.2",
     "next-mdx-remote": "^5.0.0",
     "next-view-transitions": "^0.3.4",
+    "nextjs-toploader": "^3.7.15",
     "posthog-js": "^1.203.1",
     "prism-react-renderer": "^2.4.1",
     "prismjs": "^1.29.0",
