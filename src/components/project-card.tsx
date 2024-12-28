@@ -70,6 +70,7 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
               height={480}
               layout
               layoutId={`project-image-${project.slug}`}
+              className="aspect-video"
               // className=" w-full aspect-video h-full object-cover object-top "
             />
           </Link>

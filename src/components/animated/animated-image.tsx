@@ -35,7 +35,7 @@ const AnimatedImage: React.FC<Props> = ({
     <motion.div
       layoutId={layoutId}
       layout={layout}
-      className={cn("", className)}
+      className={cn("rounded-xl overflow-hidden", className)}
     >
       <Image
         src={src}
