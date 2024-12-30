@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import ReplayButton from "../replay-button";
+
 import { AnimatePresence, motion } from "motion/react";
 
 import ExampleWrapper from "../example-wrapper";
