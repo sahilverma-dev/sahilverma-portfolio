@@ -8,7 +8,7 @@ import { getProjects } from "@/lib/project";
 const ProjectsSection = async () => {
   const projects = await getProjects(6);
   return (
-    <AnimationContainer customClassName="w-full py-12 lg:py-16">
+    <AnimationContainer className="w-full py-12 lg:py-16">
       <h2 className="mb-8 text-2xl font-bold tracking-tight text-center text-white lg:text-start">
         Projects
       </h2>

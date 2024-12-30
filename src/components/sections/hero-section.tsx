@@ -9,7 +9,7 @@ import MyPhoto from "../my-photo";
 const Hero = () => {
   return (
     <div className="relative flex flex-col-reverse items-center justify-between w-full py-12 lg:py-16 lg:flex-row">
-      <AnimationContainer customClassName="flex flex-col items-center justify-between max-w-lg lg:items-start p-0 lg:pr-8">
+      <AnimationContainer className="flex flex-col items-center justify-between max-w-lg lg:items-start p-0 lg:pr-8">
         <h3 className="text-sm lg:text-xl text-white/80">
           Jai hind dosto <span className="text-white">🫡</span>
         </h3>
@@ -48,7 +48,7 @@ const Hero = () => {
         </div>
       </AnimationContainer>
 
-      <AnimationContainer customClassName="mb-8 relative lg:mb-0">
+      <AnimationContainer className="mb-8 relative lg:mb-0">
         <MyPhoto />
         <div className="absolute block w-44 h-44 rounded-full md:hidden top-0 left-0 right-1/2 -z-10 bg-violet-500/40 blur-[5rem]"></div>
       </AnimationContainer>

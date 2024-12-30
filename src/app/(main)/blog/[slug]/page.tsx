@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowLeftIcon } from "lucide-react";
 
 import { formatDate } from "@/lib/utils";
-// import Image from "next/image";
+
 import AnimatedImage from "@/components/animated/animated-image";
 import AnimatedSignature from "@/components/animated/animated-signature";
 
@@ -24,11 +24,12 @@ export const generateMetadata = async ({ params }: Props) => {
   }
 
   const { metadata } = post;
-  const { title, summary, image } = metadata;
+  const { title, summary, image, keywords } = metadata;
 
   return {
     title,
     description: summary,
+    keywords,
     openGraph: {
       images: [image],
       title,
@@ -57,7 +58,7 @@ const Blog = async ({ params }: Props) => {
   }
 
   const { metadata, content } = post;
-  const { title, image, author, publishedAt } = metadata;
+  const { title, image, author, publishedAt, image_credit } = metadata;
 
   return (
     <div className="w-full">
@@ -70,17 +71,32 @@ const Blog = async ({ params }: Props) => {
       </Link>
 
       {image && (
-        <AnimatedImage
-          className="relative mb-6 h-96 w-full overflow-hidden rounded-lg"
-          src={image}
-          alt={title as string}
-          layout
-          layoutId={`blog-image-${slug}`}
-          width={1000}
-          height={680}
-          loading="lazy"
-          decoding="async"
-        />
+        <div className="relative">
+          <AnimatedImage
+            className="relative mb-6 h-96 w-full overflow-hidden rounded-lg"
+            src={image}
+            alt={title as string}
+            layout
+            layoutId={`blog-image-${slug}`}
+            width={1000}
+            height={680}
+            loading="lazy"
+            decoding="async"
+          />
+          {image_credit && (
+            <div className="text-xs italic mb-4 flex items-center">
+              <span>Image Credit:</span>
+              <a
+                href={image_credit.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-1 text-blue-500 hover:underline"
+              >
+                {image_credit.name}
+              </a>
+            </div>
+          )}
+        </div>
       )}
 
       <div>

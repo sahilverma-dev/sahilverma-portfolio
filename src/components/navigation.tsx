@@ -18,6 +18,31 @@ const Navigation = () => {
 
   const isBlogActive = pathname?.startsWith("/blog");
 
+  const [isVisible, setIsVisible] = useState(true);
+  const [prevScrollY, setPrevScrollY] = useState(0);
+
+  const handleScroll = () => {
+    const currentScrollY = window.scrollY;
+
+    if (currentScrollY > prevScrollY && currentScrollY > 500) {
+      setTimeout(() => {
+        setIsVisible(false);
+      }, 200);
+    } else {
+      setIsVisible(true);
+    }
+
+    setPrevScrollY(currentScrollY);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [prevScrollY]);
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
@@ -34,9 +59,12 @@ const Navigation = () => {
   }, []);
 
   return (
-    <header
+    <motion.header
+      style={{
+        top: isVisible ? 0 : "-100%",
+      }}
       className={cn(
-        "z-[99999] fixed w-full top-0 left-0 transition-all",
+        "z-[99999] fixed w-full left-0 transition-all",
         bigNav ? "bg-black/10 backdrop-blur" : "md:py-6 bg-transparent "
       )}
     >
@@ -156,7 +184,7 @@ const Navigation = () => {
           bigNav ? "opacity-20" : "opacity-0"
         )}
       />
-    </header>
+    </motion.header>
   );
 };
 

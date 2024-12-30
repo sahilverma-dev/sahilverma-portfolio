@@ -16,6 +16,11 @@ export type BlogMetadata = {
   author?: string;
   publishedAt?: string;
   slug: string;
+  keywords?: string[];
+  image_credit?: {
+    name: string;
+    url: string;
+  };
 };
 
 export async function getBlogBySlug(slug: string): Promise<Blog | null> {

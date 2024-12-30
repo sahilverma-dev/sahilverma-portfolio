@@ -1,0 +1,385 @@
+---
+  title: "Learn basic animation for React with motion"
+  summary: "Learn how to create animations in React with Motion, formerly called Framer Motion, for smooth and easy transitions."
+  image: 'https://images.pexels.com/photos/4048093/pexels-photo-4048093.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+  author: 'Sahil Verma'
+  image_credit:
+    name: "Erik Mclean"
+    url: "https://www.pexels.com/@introspectivedsgn/"
+  publishedAt: '2024-12-30'
+  keywords:
+    - framer motion
+    - motion
+    - animation
+    - frontend
+    - ui
+    - ux
+    - design
+    - transition
+    - react
+
+---
+
+Framer Motion is a widely used library for animations and gestures in React, offering a simple yet powerful API for creating interactive animations and transitions. Recently, the creator of Framer Motion announced its independence, and the library has been rebranded as **Motion**. You can read the announcement [here](https://motion.dev/blog/framer-motion-is-now-independent-introducing-motion). In this article, we will explore the basics of Motion.
+
+---
+
+<CallOut type='info'>
+
+In this tutorial, I'll be using React, Tailwind CSS, and TypeScript. Since Motion aims to provide animation tools beyond React, you can use it with any library or framework of your choice.
+
+</CallOut>
+
+## **1. Installation**
+
+To use Motion, first install the library with any package manger
+
+```bash
+npm install motion # for npm
+```
+
+```bash
+pnpm install motion # for pnpm
+```
+
+```bash
+yarn install motion # for yarn
+```
+
+```bash
+bun add motion # for bun
+```
+
+---
+
+## **2. Basic Usage**
+
+Motion makes it simple to animate React components. To animate elements, you use the `motion` component, which is a wrapper around standard React components like `div`, `span`, etc.
+
+```jsx
+<motion.div />
+<motion.span />
+<motion.p />
+```
+
+Animating a motion component is as straightforward as setting values via the animate prop.
+
+```jsx
+<motion.div animate={{ rotate: 360 }} />
+```
+
+### Enter animation
+
+When a component enters the page, it will automatically animate from the rendered value, but you can provide different values via the initial prop.
+
+```jsx
+<motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} />
+```
+
+Here is an overview of a `motion div` (try to play with motion values).
+
+<OverViewAnimation />
+
+Now lets see some examples
+
+### Example: Simple Fade In Animation
+
+```jsx
+import { motion } from "motion/react";
+
+const App = () => {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+    >
+      Hello, World!
+    </motion.div>
+  );
+};
+```
+
+<SimpleFadeInAnimation />
+
+**Explanation:**
+
+- **`initial`**: Defines the starting state of the element (e.g., `opacity: 0`).
+- **`animate`**: Defines the end state of the animation (e.g., `opacity: 1`).
+- **`transition`**: Controls the timing of the animation (e.g., `duration: 1` means 1 second).
+
+---
+
+## **3. Key Properties**
+
+- **`initial`**: The state the component starts with.
+- **`animate`**: The state the component transitions to.
+- **`exit`**: The state the component transitions to when it leaves the DOM (for conditional rendering).
+- **`transition`**: Controls how the animation should proceed, such as timing and easing.
+
+## **4. Animation Variants**
+
+Motion uses "variants" to define different states of an animation that can be reused across multiple components. This helps make your code cleaner.
+
+### Example: Using Variants
+
+```jsx
+import { motion } from "motion/react";
+
+const boxVariants = {
+  hidden: { opacity: 0, x: -100 },
+  visible: { opacity: 1, x: 0 },
+};
+
+const App = () => {
+  return (
+    <motion.div
+      variants={boxVariants}
+      initial="hidden"
+      animate="visible"
+      transition={{ duration: 1 }}
+    >
+      Animated Box
+    </motion.div>
+  );
+};
+```
+
+<AnimationVariants />
+
+**Explanation:**
+
+- **Variants** define keyframes or states in an object (`hidden`, `visible`).
+- **`initial="hidden"`**: The box starts in the `hidden` state.
+- **`animate="visible"`**: The box animates to the `visible` state.
+
+---
+
+## **5. Gestures (Interactions)**
+
+Motion supports common gestures like hover, tap, and drag, allowing you to animate elements based on user interactions.
+
+### Example: Hover Animation
+
+```jsx
+import { motion } from "motion/react";
+
+const App = () => {
+  return (
+    <motion.div
+      whileHover={{ scale: 1.2 }}
+      transition={{ type: "spring", stiffness: 300 }}
+    >
+      Hover me!
+    </motion.div>
+  );
+};
+```
+
+<HoverAnimation />
+
+**Explanation:**
+
+- **`whileHover`**: Defines the animation to run when the element is hovered (e.g., scaling up).
+- **`transition`**: Controls how the hover effect behaves, such as `spring` physics for a more natural look.
+
+---
+
+## **6. Dragging Elements**
+
+Motion allows you to make elements draggable with a few simple props.
+
+### Example: Draggable Box
+
+```jsx
+import { motion } from "motion/react";
+
+const App = () => {
+  return (
+    <motion.div
+      drag
+      style={{ width: "200px", height: "200px", backgroundColor: "teal" }}
+    >
+      Drag me!
+    </motion.div>
+  );
+};
+```
+
+<DraggableBox />
+**Explanation:**
+
+- **`drag`**: Enables drag functionality.
+- You can also control the drag behavior more specifically by using props like `dragConstraints` to limit the drag area.
+
+---
+
+## **7. Animating Layout Changes (Layout Animations)**
+
+Motion also allows you to animate layout changes such as when the position or size of elements change.
+
+### Example: Layout Animation on Reorder
+
+```jsx
+import { motion } from "motion/react";
+
+const listItems = ["Item 1", "Item 2", "Item 3"];
+
+const App = () => {
+  return (
+    <motion.ul layout>
+      {listItems.map((item, index) => (
+        <motion.li
+          key={index}
+          layout
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          {item}
+        </motion.li>
+      ))}
+    </motion.ul>
+  );
+};
+```
+
+<LayoutAnimation />
+
+**Explanation:**
+
+- **`layout`**: This prop makes the component automatically animate when its layout (size, position) changes.
+- **Initial and animate states** define fade-in effects.
+
+## Layout id
+
+<LayoutIdAnimation />
+
+---
+
+## **8. Orchestrating Complex Animations (Staggering)**
+
+You can stagger animations to create more complex effects.
+
+### Example: Staggered Animations
+
+```jsx
+import { motion } from "motion/react";
+
+const App = () => {
+  return (
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={{
+        visible: {
+          transition: {
+            staggerChildren: 0.2,
+          },
+        },
+      }}
+    >
+      {[...Array(5)].map((_, i) => (
+        <motion.div
+          key={i}
+          variants={{
+            hidden: { opacity: 0, y: 20 },
+            visible: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.5 }}
+        >
+          Item {i + 1}
+        </motion.div>
+      ))}
+    </motion.div>
+  );
+};
+```
+
+<StaggeredAnimation />
+
+**Explanation:**
+
+- **`staggerChildren`**: Stagger the animation of child elements by the specified delay (e.g., `0.2` seconds).
+- Each child has its own animation, and they animate in a staggered manner.
+
+---
+
+## **9. Exit Animations**
+
+Motion also allows animations when components are removed from the DOM, often used with `React` state or routing.
+
+### Example: Exit Animation with `AnimatePresence`
+
+```jsx
+import { motion, AnimatePresence } from "motion/react";
+
+const App = () => {
+  const [isVisible, setIsVisible] = React.useState(true);
+
+  return (
+    <div>
+      <button onClick={() => setIsVisible(!isVisible)}>Toggle</button>
+      <AnimatePresence>
+        {isVisible && (
+          <motion.div
+            key="box"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            I will fade in and out
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+```
+
+<ExitAnimation />
+
+**Explanation:**
+
+- **`AnimatePresence`**: Wraps components that will be conditionally rendered (e.g., when a state changes).
+- **`exit`**: Specifies the animation that should occur when the component exits the DOM.
+
+---
+
+## **10. Advanced Animations (Motion Values and Controls)**
+
+Motion also exposes **motion values** and **animation controls** for advanced use cases.
+
+### Example: Motion Value
+
+```jsx
+import { motion, useMotionValue, useTransform } from "motion/react";
+
+const App = () => {
+  const x = useMotionValue(0);
+  const rotate = useTransform(x, [0, 300], [0, 360]);
+
+  return (
+    <motion.div
+      drag="x"
+      style={{ x }}
+      dragConstraints={{ left: 0, right: 300 }}
+    >
+      <motion.div style={{ rotate }} />
+    </motion.div>
+  );
+};
+```
+
+<MotionValueAnimation />
+**Explanation:**
+
+- **`useMotionValue`**: Creates a motion value for the `x` position.
+- **`useTransform`**: Maps the `x` value to a `rotate` value for rotation as the element is dragged.
+
+---
+
+## **Conclusion**
+
+Motion provides a declarative API to add rich animations and interactions to your React apps. Whether you're working on simple animations, drag interactions, or complex layout transitions, Motion has the tools you need to create polished, responsive user experiences with minimal code.

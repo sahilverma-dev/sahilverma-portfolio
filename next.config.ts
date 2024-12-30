@@ -26,6 +26,9 @@ const nextConfig = {
       {
         hostname: "raw.githubusercontent.com",
       },
+      {
+        hostname: "images.pexels.com",
+      },
     ],
   },
 };

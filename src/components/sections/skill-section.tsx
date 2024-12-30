@@ -4,7 +4,7 @@ import { Badge } from "../ui/badge";
 
 const SkillsSection = () => {
   return (
-    <AnimationContainer customClassName="w-full ">
+    <AnimationContainer className="w-full ">
       <h2 className="mb-8 text-2xl font-bold tracking-tight text-white lg:text-start">
         Skills
       </h2>
@@ -19,7 +19,7 @@ const SkillsSection = () => {
           {SKILLS?.map(({ title, stacks }) => (
             <AnimationContainer
               key={title}
-              customClassName="flex fex-col items-center"
+              className="flex fex-col items-center"
             >
               <div>
                 <h3 className="items-start mb-3 text-lg font-bold text-white">

@@ -2,7 +2,7 @@ import AnimationContainer from "../animated/animated-container";
 
 const AboutMe = () => {
   return (
-    <AnimationContainer customClassName="w-full py-12 lg:py-16">
+    <AnimationContainer className="w-full py-12 lg:py-16">
       <h2 className="mb-8 text-2xl font-bold tracking-tight text-center md:text-left text-white lg:text-start">
         About me
       </h2>
