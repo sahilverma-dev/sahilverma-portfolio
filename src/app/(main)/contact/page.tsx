@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 
 import MyPhoto from "@/components/my-photo";
 import { SOCIAL_LINKS } from "@/lib/constants";
+import ContactForm from "@/components/forms/contact-form";
 
 const Contact = () => {
   return (
@@ -53,6 +54,7 @@ const Contact = () => {
           </p>
         </div>
       </div>
+      <ContactForm />
     </div>
   );
 };
