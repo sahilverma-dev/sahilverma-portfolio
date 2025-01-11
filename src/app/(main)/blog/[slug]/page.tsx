@@ -8,6 +8,7 @@ import { formatDate } from "@/lib/utils";
 
 import AnimatedImage from "@/components/animated/animated-image";
 import AnimatedSignature from "@/components/animated/animated-signature";
+import AnimationContainer from "@/components/animated/animated-container";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -61,14 +62,16 @@ const Blog = async ({ params }: Props) => {
   const { title, image, author, publishedAt, image_credit } = metadata;
 
   return (
-    <div className="w-full">
-      <Link
-        href="/blog"
-        className="mb-8 inline-flex items-center gap-2 text-sm font-light text-muted-foreground transition-colors hover:text-foreground"
-      >
-        <ArrowLeftIcon className="h-5 w-5" />
-        <span>Back to blogs</span>
-      </Link>
+    <div className="w-full max-w-2xl mx-auto">
+      <AnimationContainer invert>
+        <Link
+          href="/blog"
+          className="mb-8 inline-flex items-center gap-2 text-sm font-light text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <ArrowLeftIcon className="h-5 w-5" />
+          <span>Back to blogs</span>
+        </Link>
+      </AnimationContainer>
 
       {image && (
         <div className="relative">
