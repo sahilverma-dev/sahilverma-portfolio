@@ -66,7 +66,7 @@ const MobileNavigation = () => {
         />
       </motion.div>
 
-      <AnimatePresence presenceAffectsLayout mode="wait">
+      <AnimatePresence presenceAffectsLayout>
         {isOpen && (
           <motion.div
             initial="closed"

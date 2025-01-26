@@ -64,7 +64,7 @@ const BlogImage: React.FC<BlogImageProps> = ({
         {alt}
       </motion.p>
 
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         {open && (
           <div className="fixed inset-0 z-[999999]">
             <motion.button

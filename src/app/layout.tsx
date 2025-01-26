@@ -32,12 +32,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <Providers>
-        <body className={`${poppins.className} antialiased`}>
+      <body className={`${poppins.className} antialiased`}>
+        <Providers>
           {children}
           <AnimatedBackground />
-        </body>
-      </Providers>
+        </Providers>
+      </body>
     </html>
   );
 }

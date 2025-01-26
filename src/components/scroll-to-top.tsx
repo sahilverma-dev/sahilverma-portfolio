@@ -34,7 +34,7 @@ const ScrollToTop = () => {
   }, [isVisible, controls]);
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence>
       <motion.div
         initial={{ opacity: 0, x: 20 }}
         animate={controls}
