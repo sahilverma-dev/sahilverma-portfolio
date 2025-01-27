@@ -16,7 +16,7 @@ const Footer = () => {
           <div className="md:w-[337px]">
             <Link href="/" className="flex items-center gap-2">
               <Logo className="h-8 w-8 object-contain md:object-left" />
-              <h1 className="text-2xl font-bold text-white">Sahil Verma</h1>
+              <p className="text-2xl font-bold text-white">Sahil Verma</p>
             </Link>
           </div>
           <div className="flex gap-6 items-center text-xl">

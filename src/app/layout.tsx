@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "@/styles/globals.css";
 
-import AnimatedBackground from "@/components/animated/animated-background";
 import Providers from "@/components/providers";
+import AnimatedBackground from "@/components/animated/animated-background";
 
 const poppins = Poppins({
   subsets: ["latin"],

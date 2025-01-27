@@ -1,17 +1,24 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
 import Image from "next/image";
 
-const MyPhoto = () => {
+interface Props {
+  className?: string;
+}
+
+const MyPhoto: React.FC<Props> = ({ className }) => {
   return (
     <motion.div
       layout
       layoutId="sahil-verma"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="border border-white/10  transition duration-300 ease-out overflow-hidden rounded-3xl lg:w-96 aspect-square"
+      whileHover={{ scale: 1.07 }}
+      whileTap={{ scale: 0.9 }}
+      className={cn(
+        "border border-white/10 transition duration-300 ease-out overflow-hidden rounded-3xl lg:w-96 aspect-square",
+        className
+      )}
     >
       <Image
         src="/images/sahil-verma.png"
