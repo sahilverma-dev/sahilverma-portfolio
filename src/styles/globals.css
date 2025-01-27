@@ -20,6 +20,13 @@
   --sh-comment: #a19595;
 }
 
+/* excalidraw font */
+
+@font-face {
+  font-family: "Excalifont";
+  src: url("https://excalidraw.nyc3.cdn.digitaloceanspaces.com/oss/fonts/Excalifont/Excalifont-Regular-a88b72a24fb54c9f94e3b5fdaa7481c9.woff2");
+}
+
 html {
   color-scheme: dark;
 }
