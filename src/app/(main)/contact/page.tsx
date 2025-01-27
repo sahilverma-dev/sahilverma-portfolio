@@ -9,12 +9,11 @@ import AnimationContainer from "@/components/animated/animated-container";
 
 const Contact = () => {
   return (
-    <div className="flex flex-col lg:flex-row gap-8 mg:gap-6">
+    <div className="flex flex-col md:mt-20 items-center justify-center md:flex-row gap-8 mg:gap-6">
       <div className="space-y-4 text-center md:text-left">
-        <AnimationContainer invert>
-          <MyPhoto className="w-32 lg:w-52 mx-auto lg:mx-0" />
-        </AnimationContainer>
-        <div className="max-w-2xl mx-auto lg:py-3 space-y-2 lg:space-y-4">
+        <MyPhoto className="w-32 lg:w-52 mx-auto md:mx-0" />
+
+        <div className="max-w-2xl mx-auto md:py-3 space-y-2 md:space-y-4">
           <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
             Say Hello 👋
           </h1>
@@ -59,9 +58,9 @@ const Contact = () => {
           </p>
         </div>
       </div>
-      {/* <AnimationContainer className="w-full"> */}
-      <ContactForm />
-      {/* </AnimationContainer> */}
+      <AnimationContainer className="w-full">
+        <ContactForm />
+      </AnimationContainer>
     </div>
   );
 };

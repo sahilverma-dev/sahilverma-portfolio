@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import AnimationContainer from "../animated/animated-container";
-import { SendIcon } from "lucide-react";
+import { Loader2Icon, SendIcon } from "lucide-react";
 import { sendContact } from "@/actions/sendContact";
 
 export const ContactFormSchema = z.object({
@@ -130,10 +130,13 @@ const ContactForm = () => {
             className=" disabled:opacity-50 bg-blue-500 hover:bg-blue-600 rounded-full "
           >
             {isSubmitting ? (
-              "Submitting..."
+              <>
+                <Loader2Icon className="animate-spin h-5 aspect-square mr-1" />{" "}
+                Submitting
+              </>
             ) : (
               <>
-                <SendIcon className="h-5 aspect-square" /> Send Message
+                <SendIcon className="h-5 aspect-square mr-2" /> Send Message
               </>
             )}
           </Button>

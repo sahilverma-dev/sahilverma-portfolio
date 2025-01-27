@@ -34,7 +34,7 @@ export function TableOfContents() {
     const collectedHeadings = getHeadings();
 
     console.log({ collectedHeadings });
-    // setHeadings(collectedHeadings);
+    setHeadings(collectedHeadings);
 
     const observerOptions = {
       root: null,
