@@ -3,8 +3,10 @@
 import { motion } from "framer-motion";
 // icons
 import { BsLinkedin as LinkedinIcon } from "react-icons/bs";
-import { FiCodepen as CodepenIcon } from "react-icons/fi";
+// import { FiCodepen as CodepenIcon } from "react-icons/fi";
 import { BsGithub as GithubIcon } from "react-icons/bs";
+import { CalDotComIcon } from "./ui/icons";
+
 import {
   BsTwitterX as TwitterXIcon,
   BsDiscord as DiscordIcon,
@@ -14,11 +16,17 @@ import { GlobeIcon, MailIcon } from "lucide-react";
 
 import { SocialLink } from "@/components/social-link";
 
-const links = [
+export const links = [
+  {
+    href: "https://cal.com/sahilverma.dev",
+    icon: CalDotComIcon,
+    label: "Book a meeting on cal.dom",
+    newTab: true,
+  },
   {
     href: "https://github.com/sahilverma-dev",
-    icon: GithubIcon,
     label: "Follow on GitHub",
+    icon: GithubIcon,
     newTab: true,
   },
   {
@@ -33,12 +41,12 @@ const links = [
     label: "Connect on LinkedIn",
     newTab: true,
   },
-  {
-    href: "https://codepen.io/sahilpro",
-    icon: CodepenIcon,
-    label: "Follow on Codepen",
-    newTab: true,
-  },
+  // {
+  //   href: "https://codepen.io/sahilpro",
+  //   icon: CodepenIcon,
+  //   label: "Follow on Codepen",
+  //   newTab: true,
+  // },
   {
     href: "https://discord.com/users/669542427454996490",
     icon: DiscordIcon,
@@ -60,8 +68,8 @@ const links = [
   {
     href: "/",
     icon: GlobeIcon,
-    label: "Portfolio",
-    newTab: true,
+    label: "Go back to Portfolio",
+    newTab: false,
   },
 ];
 

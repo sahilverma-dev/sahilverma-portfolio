@@ -65,7 +65,7 @@ const ContactForm = () => {
   };
 
   return (
-    <div className="bg-white/10 backdrop-blur w-full rounded-2xl shadow-xl p-4 md:p-6">
+    <div className="bg-white/5 backdrop-blur w-full rounded-2xl shadow-xl p-4 md:p-6">
       <h2 className="text-2xl font-bold mb-6">Get in Touch</h2>
       <form onSubmit={handleSubmit(processForm)} className="space-y-4">
         {/* Name */}

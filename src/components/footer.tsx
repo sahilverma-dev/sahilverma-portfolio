@@ -20,7 +20,7 @@ const Footer = () => {
             </Link>
           </div>
           <div className="flex gap-6 items-center text-xl">
-            {SOCIAL_LINKS?.map((social, index) => (
+            {SOCIAL_LINKS?.slice(1)?.map((social, index) => (
               <a
                 key={index}
                 href={social?.href}

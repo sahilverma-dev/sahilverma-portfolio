@@ -15,14 +15,39 @@ const Contact = () => {
 
         <div className="max-w-2xl mx-auto md:py-3 space-y-2 md:space-y-4">
           <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
-            Say Hello 👋
+            Contact Me
           </h1>
 
-          <p className="text-sm md:text-base text-gray-600 dark:text-gray-300">
-            You can reach out to me on my social media.
+          <p className="text-sm text-gray-600 dark:text-gray-300">
+            Feel free to{" "}
+            <a
+              href="mailto:sahilverma.webdev@gmail.com"
+              className="font-medium text-blue-500 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 hover:underline decoration-2 underline-offset-2 transition-colors duration-200"
+            >
+              mail me
+            </a>
+            ,{" "}
+            <a
+              href="https://cal.com/sahilverma.dev"
+              target="_blank"
+              className="font-medium text-blue-500 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 hover:underline decoration-2 underline-offset-2 transition-colors duration-200"
+            >
+              schedule a meeting
+            </a>{" "}
+            or reach out to me on my social media.
+            <br />
+            I&apos;m most active on{" "}
+            <a
+              href="https://discord.com/users/669542427454996490"
+              target="_blank"
+              className="font-medium text-blue-500 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 hover:underline decoration-2 underline-offset-2 transition-colors duration-200"
+            >
+              Discord
+            </a>
+            .
           </p>
 
-          <ul className="flex items-center justify-center md:justify-normal gap-2 md:gap-3">
+          <ul className="flex items-center justify-center md:justify-normal gap-2 md:gap-4">
             {SOCIAL_LINKS.map((link, index) => (
               <motion.li
                 key={index}
@@ -38,24 +63,14 @@ const Contact = () => {
                 <a
                   href={link.href}
                   target="_blank"
-                  className="block p-2 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 transform hover:scale-110 transition-all duration-200"
+                  className="block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 transform hover:scale-110 transition-all duration-200"
                   aria-label={`Connect on ${link.title}`}
                 >
-                  <link.icon className="w-4 md:w-6 aspect-square" />
+                  <link.icon className="w-5 h-5 object-contain aspect-square" />
                 </a>
               </motion.li>
             ))}
           </ul>
-
-          <p className="text-sm md:text-base text-gray-600 dark:text-gray-300">
-            or you can email me at{" "}
-            <a
-              href="mailto:sahilverma.webdev@gmail.com"
-              className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 hover:underline decoration-2 underline-offset-2 transition-colors duration-200"
-            >
-              sahilverma.webdev@gmail.com
-            </a>
-          </p>
         </div>
       </div>
       <AnimationContainer className="w-full">

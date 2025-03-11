@@ -1,6 +1,7 @@
 // icons
+import { CalDotComIcon } from "@/components/ui/icons";
 import { BsLinkedin as LinkedinIcon } from "react-icons/bs";
-import { FiCodepen as CodepenIcon } from "react-icons/fi";
+// import { FiCodepen as CodepenIcon } from "react-icons/fi";
 import { BsGithub as GithubIcon } from "react-icons/bs";
 import {
   BsTwitterX as TwitterXIcon,
@@ -35,6 +36,11 @@ export const LINKS = [
 // social media
 export const SOCIAL_LINKS = [
   {
+    title: "Cal.com",
+    icon: CalDotComIcon,
+    href: "https://cal.com/sahilverma.dev",
+  },
+  {
     title: "Discord",
     icon: DiscordIcon,
     href: "https://discord.com/users/669542427454996490",
@@ -44,11 +50,11 @@ export const SOCIAL_LINKS = [
     icon: LinkedinIcon,
     href: "https://www.linkedin.com/in/sahil-verma-970b9920a/",
   },
-  {
-    title: "CodePen",
-    icon: CodepenIcon,
-    href: "https://codepen.io/sahilpro/",
-  },
+  // {
+  //   title: "CodePen",
+  //   icon: CodepenIcon,
+  //   href: "https://codepen.io/sahilpro/",
+  // },
   {
     title: "GitHub",
     icon: GithubIcon,
