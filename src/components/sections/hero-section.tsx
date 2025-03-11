@@ -48,10 +48,10 @@ const Hero = () => {
         </div>
       </AnimationContainer>
 
-      <AnimationContainer className="mb-8 relative lg:mb-0">
+      <div className="mb-8 relative lg:mb-0">
         <MyPhoto />
         <div className="absolute block w-44 h-44 rounded-full md:hidden top-0 left-0 right-1/2 -z-10 bg-violet-500/40 blur-[5rem]"></div>
-      </AnimationContainer>
+      </div>
     </div>
   );
 };

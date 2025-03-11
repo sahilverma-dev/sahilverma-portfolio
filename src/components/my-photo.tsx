@@ -15,6 +15,15 @@ const MyPhoto: React.FC<Props> = ({ className }) => {
       layoutId="sahil-verma"
       whileHover={{ scale: 1.07 }}
       whileTap={{ scale: 0.9 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        duration: 0.2,
+        ease: "easeInOut",
+        type: "spring",
+        stiffness: 260,
+        damping: 20,
+      }}
       className={cn(
         "border border-white/10 transition duration-300 ease-out overflow-hidden rounded-3xl lg:w-96 aspect-square",
         className
