@@ -110,31 +110,33 @@ const Navigation = () => {
                   }}
                   className="relative text-sm text-gray-400"
                 >
-                  <Link
-                    href={link.href}
-                    // onClick={() => setActiveLink(link.name)}
-                    className={cn(
-                      "flex items-center justify-center px-4 py-2 transition hover:text-white",
-                      (pathname === link.href ||
-                        (isBlogActive && link.name === "Blog")) &&
-                        "text-white"
-                    )}
-                  >
-                    {link.name}
+                  <Magnetic>
+                    <Link
+                      href={link.href}
+                      // onClick={() => setActiveLink(link.name)}
+                      className={cn(
+                        "flex items-center justify-center px-4 py-2 transition hover:text-white",
+                        (pathname === link.href ||
+                          (isBlogActive && link.name === "Blog")) &&
+                          "text-white"
+                      )}
+                    >
+                      {link.name}
 
-                    {(pathname === link.href ||
-                      (isBlogActive && link.name === "Blog")) && (
-                      <motion.span
-                        layout
-                        layoutId="activeLink"
-                        transition={{
-                          type: "spring",
-                          bounce: 0.3,
-                        }}
-                        className="absolute inset-0 rounded-full border-neutral-800 bg-primary  -z-10"
-                      />
-                    )}
-                  </Link>
+                      {(pathname === link.href ||
+                        (isBlogActive && link.name === "Blog")) && (
+                        <motion.span
+                          layout
+                          layoutId="activeLink"
+                          transition={{
+                            type: "spring",
+                            bounce: 0.3,
+                          }}
+                          className="absolute inset-0 rounded-full border-neutral-800 bg-primary  -z-10"
+                        />
+                      )}
+                    </Link>
+                  </Magnetic>
                 </motion.li>
               ))}
             </ul>
@@ -154,30 +156,30 @@ const Navigation = () => {
             ))}
           </div> */}
 
-          {/* <Magnetic> */}
-          <motion.a
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              type: "spring",
-              bounce: 0.3,
-              duration: 0.5,
-              delay: 0.2 + LINKS.length * 0.1,
-            }}
-            href="https://cal.com/sahilverma.dev"
-            target="_blank"
-            className="inline-flex items-center gap-2 border border-white/10 bg-white/10 backdrop-blur-sm hover:bg-primary hover:text-white text-xs px-3.5 py-1.5 md:px-4 md:py-2 rounded-full font-medium md:text-sm transition-all duration-300"
-          >
-            <span>Let&apos;s talk</span>
-            <Image
-              src="https://camo.githubusercontent.com/d552948e7884c41fde2d32b9221d79f0df2076c7d824aaab954ca93f53d95884/68747470733a2f2f6d656469612e67697068792e636f6d2f6d656469612f6876524a434c467a6361737252346961377a2f67697068792e676966"
-              height={50}
-              width={50}
-              alt="hello"
-              className="h-4 w-4 md:h-6 md:w-6 aspect-square object-contain"
-            />
-          </motion.a>
-          {/* </Magnetic> */}
+          <Magnetic>
+            <motion.a
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                type: "spring",
+                bounce: 0.3,
+                duration: 0.5,
+                delay: 0.2 + LINKS.length * 0.1,
+              }}
+              href="https://cal.com/sahilverma.dev"
+              target="_blank"
+              className="inline-flex items-center gap-2 border border-white/10 bg-white/10 backdrop-blur-sm hover:bg-primary hover:text-white text-xs px-3.5 py-1.5 md:px-4 md:py-2 rounded-full font-medium md:text-sm transition-all duration-300"
+            >
+              <span>Let&apos;s talk</span>
+              <Image
+                src="https://camo.githubusercontent.com/d552948e7884c41fde2d32b9221d79f0df2076c7d824aaab954ca93f53d95884/68747470733a2f2f6d656469612e67697068792e636f6d2f6d656469612f6876524a434c467a6361737252346961377a2f67697068792e676966"
+                height={50}
+                width={50}
+                alt="hello"
+                className="h-4 w-4 md:h-6 md:w-6 aspect-square object-contain"
+              />
+            </motion.a>
+          </Magnetic>
 
           {/* mobile navigation */}
           <MobileNavigation />
