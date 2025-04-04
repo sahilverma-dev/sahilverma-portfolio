@@ -20,7 +20,7 @@ export const links = [
   {
     href: "https://cal.com/sahilverma.dev",
     icon: CalDotComIcon,
-    label: "Book a meeting on cal.dom",
+    label: "Book a meeting on cal.com",
     newTab: true,
   },
   {
