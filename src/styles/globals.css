@@ -1,9 +1,26 @@
 @import "tailwindcss";
-
 :root {
-  --background: 210, 100%, 6%;
-  --foreground: 0, 0%, 100%;
-  --primary: 21deg 100% 46%;
+  --background: 210 100% 6%;
+  --foreground: 0 0% 100%;
+  --primary: 21 100% 46%;
+  --line: linear-gradient(
+    90deg,
+    hsla(0, 0%, 95%, 0) 0%,
+    #f3f3f3 50%,
+    hsla(0, 0%, 95%, 0)
+  );
+}
+
+@theme {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-primary: hsl(var(--primary));
+  --color-line: linear-gradient(
+    90deg,
+    hsla(0, 0%, 95%, 0) 0,
+    #f3f3f3 50%,
+    hsla(0, 0%, 95%, 0)
+  );
 }
 
 html {
