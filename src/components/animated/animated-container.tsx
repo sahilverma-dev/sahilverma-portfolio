@@ -7,6 +7,7 @@ interface AnimationContainerProps {
   className?: string;
   customDelay?: number;
   invert?: boolean;
+  once?: boolean;
 }
 
 const AnimationContainer = ({
@@ -14,13 +15,14 @@ const AnimationContainer = ({
   className,
   customDelay = 0.3,
   invert = false,
+  once = true,
 }: AnimationContainerProps) => {
   return (
     <motion.div
       className={className}
       initial={{ opacity: 0, y: invert ? -20 : 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: false }}
+      viewport={{ once }}
       transition={{
         delay: customDelay,
         duration: 0.2,

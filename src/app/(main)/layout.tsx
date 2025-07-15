@@ -1,3 +1,4 @@
+import Footer from "@/components/footer";
 import Navigation from "@/components/navigation";
 
 const MainLayout = ({ children }: React.PropsWithChildren) => {
@@ -8,7 +9,7 @@ const MainLayout = ({ children }: React.PropsWithChildren) => {
         {children}
         {/* <ScrollToTop /> */}
       </main>
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 };
